@@ -8,11 +8,9 @@ Date : 19 April 2018
 #TODO       This is because we cant just query a siongle property with the Fronious API.
 #TODO       We shouldnt hit the API for every property as this needlessly loads the server.
 
-import sys
 import requests
 from collections import namedtuple
 import datetime
-
 
 class Fronius:
     '''
