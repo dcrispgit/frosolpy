@@ -8,6 +8,9 @@ Date : 19 April 2018
 #TODO       This is because we cant just query a siongle property with the Fronious API.
 #TODO       We shouldnt hit the API for every property as this needlessly loads the server.
 
+#https://github.com/dcrispgit/FroSolPy/tree/master/project
+
+
 import requests
 from collections import namedtuple
 import datetime
@@ -252,14 +255,14 @@ class Fronius:
         On first run we will go through ALL the different data collection routines... 
         Then when we query it later we only query what we want. 
         '''
-        self._getInverterinfo()
-        self._getLoggerInfo()
-        self._getPowerFlowRealtimeData()
-        self._GetInverterRealtimeData(self.scope, self.DeviceID, 'CumulationInverterData')
-        self._GetInverterRealtimeData(self.scope, self.DeviceID, 'CommonInverterData')
-        self._GetInverterRealtimeData(self.scope, self.DeviceID, '3PInverterData')
-        self._GetInverterRealtimeData(self.scope, self.DeviceID, 'MinMaxInverterData')
-        self._GetActiveDeviceInfo()
+        # self._getInverterinfo()
+        # self._getLoggerInfo()
+        # self._getPowerFlowRealtimeData()
+        # self._GetInverterRealtimeData(self.scope, self.DeviceID, 'CumulationInverterData')
+        # self._GetInverterRealtimeData(self.scope, self.DeviceID, 'CommonInverterData')
+        # self._GetInverterRealtimeData(self.scope, self.DeviceID, '3PInverterData')
+        # self._GetInverterRealtimeData(self.scope, self.DeviceID, 'MinMaxInverterData')
+        # self._GetActiveDeviceInfo()
         self._GetMeterRealtimeData()
 
     #-------------------------------------------------------------------------------------------------------------------
@@ -1226,48 +1229,217 @@ class Fronius:
         # print(url)
         # print(json)
 
+
+        #   Lots of Ifs here for checking if the data actually exists within the JSON.
+        #   Messy but Fronius have some inconsistencies on which pieces of data re returned at what times of operation.
+        #   Sometimes if a Piece of data isnt being produced by the uinit then it wont be supplied in the data.
+        #   Easiest just to create a giant mess of aa check for each piece expected.
         if self.UnitStatus.code == 0:
             try:
-                self.MeterReatlTimeData.Manufacturer = json['Body']['Data']['Details']['Manufacturer']
-                self.MeterReatlTimeData.Model = json['Body']['Data']['Details']['Model']
-                self.MeterReatlTimeData.Serial = json['Body']['Data']['Details']['Serial']
-                self.MeterReatlTimeData.Current_AC_Phase_1 = json['Body']['Data']['Current_AC_Phase_1']
-                self.MeterReatlTimeData.Current_AC_Phase_2 = json['Body']['Data']['Current_AC_Phase_2']
-                self.MeterReatlTimeData.Current_AC_Phase_3 = json['Body']['Data']['Current_AC_Phase_3']
-                self.MeterReatlTimeData.Details = json['Body']['Data']['Details']
-                self.MeterReatlTimeData.Enable = json['Body']['Data']['Enable']
-                self.MeterReatlTimeData.EnergyReactive_VArAC_Sum_Consumed = json['Body']['Data']['EnergyReactive_VArAC_Sum_Consumed']
-                self.MeterReatlTimeData.EnergyReactive_VArAC_Sum_Produced = json['Body']['Data']['EnergyReactive_VArAC_Sum_Produced']
-                self.MeterReatlTimeData.EnergyReal_WAC_Minus_Absolute = json['Body']['Data']['EnergyReal_WAC_Minus_Absolute']
-                self.MeterReatlTimeData.EnergyReal_WAC_Plus_Absolute = json['Body']['Data']['EnergyReal_WAC_Plus_Absolute']
-                self.MeterReatlTimeData.EnergyReal_WAC_Sum_Consumed = json['Body']['Data']['EnergyReal_WAC_Sum_Consumed']
-                self.MeterReatlTimeData.EnergyReal_WAC_Sum_Produced = json['Body']['Data']['EnergyReal_WAC_Sum_Produced']
-                self.MeterReatlTimeData.Frequency_Phase_Average = json['Body']['Data']['Frequency_Phase_Average']
-                self.MeterReatlTimeData.Meter_Location_Current = json['Body']['Data']['Meter_Location_Current']
-                self.MeterReatlTimeData.PowerApparent_S_Phase_1 = json['Body']['Data']['PowerApparent_S_Phase_1']
-                self.MeterReatlTimeData.PowerApparent_S_Phase_2 = json['Body']['Data']['PowerApparent_S_Phase_2']
-                self.MeterReatlTimeData.PowerApparent_S_Phase_3 = json['Body']['Data']['PowerApparent_S_Phase_3']
-                self.MeterReatlTimeData.PowerApparent_S_Sum = json['Body']['Data']['PowerApparent_S_Sum']
-                self.MeterReatlTimeData.PowerFactor_Phase_1 = json['Body']['Data']['PowerFactor_Phase_1']
-                self.MeterReatlTimeData.PowerFactor_Phase_2 = json['Body']['Data']['PowerFactor_Phase_2']
-                self.MeterReatlTimeData.PowerFactor_Phase_3 = json['Body']['Data']['PowerFactor_Phase_3']
-                self.MeterReatlTimeData.PowerFactor_Sum = json['Body']['Data']['PowerFactor_Sum']
-                self.MeterReatlTimeData.PowerReactive_Q_Phase_1 = json['Body']['Data']['PowerReactive_Q_Phase_1']
-                self.MeterReatlTimeData.PowerReactive_Q_Phase_2 = json['Body']['Data']['PowerReactive_Q_Phase_2']
-                self.MeterReatlTimeData.PowerReactive_Q_Phase_3 = json['Body']['Data']['PowerReactive_Q_Phase_3']
-                self.MeterReatlTimeData.PowerReactive_Q_Sum = json['Body']['Data']['PowerReactive_Q_Sum']
-                self.MeterReatlTimeData.PowerReal_P_Phase_1 = json['Body']['Data']['PowerReal_P_Phase_1']
-                self.MeterReatlTimeData.PowerReal_P_Phase_2 = json['Body']['Data']['PowerReal_P_Phase_2']
-                self.MeterReatlTimeData.PowerReal_P_Phase_3 = json['Body']['Data']['PowerReal_P_Phase_3']
-                self.MeterReatlTimeData.PowerReal_P_Sum = json['Body']['Data']['PowerReal_P_Sum']
-                self.MeterReatlTimeData.TimeStamp = json['Body']['Data']['TimeStamp']
-                self.MeterReatlTimeData.Visible = json['Body']['Data']['Visible']
-                self.MeterReatlTimeData.Voltage_AC_PhaseToPhase_12 = json['Body']['Data']['Voltage_AC_PhaseToPhase_12']
-                self.MeterReatlTimeData.Voltage_AC_PhaseToPhase_23 = json['Body']['Data']['Voltage_AC_PhaseToPhase_23']
-                self.MeterReatlTimeData.Voltage_AC_PhaseToPhase_31 = json['Body']['Data']['Voltage_AC_PhaseToPhase_31']
-                self.MeterReatlTimeData.Voltage_AC_Phase_1 = json['Body']['Data']['Voltage_AC_Phase_1']
-                self.MeterReatlTimeData.Voltage_AC_Phase_2 = json['Body']['Data']['Voltage_AC_Phase_2']
-                self.MeterReatlTimeData.Voltage_AC_Phase_3 = json['Body']['Data']['Voltage_AC_Phase_3']
+                if 'Details' in json['Body']['Data']:
+                    if 'Manufacturer' in  json['Body']['Data']['Details']:
+                        self.MeterReatlTimeData.Manufacturer = json['Body']['Data']['Details']['Manufacturer']
+                    else:
+                        self.MeterReatlTimeData.Manufacturer = 0
+
+                    if 'Model' in    json['Body']['Data']['Details']:
+                        self.MeterReatlTimeData.Model = json['Body']['Data']['Details']['Model']
+                    else:
+                        self.MeterReatlTimeData.Model = 0
+
+                    if 'Serial' in json['Body']['Data']['Details']:
+                        self.MeterReatlTimeData.Serial = json['Body']['Data']['Details']['Serial']
+                    else:
+                        self.MeterReatlTimeData.Serial = 0
+                else:
+                    self.MeterReatlTimeData.Manufacturer = 0
+                    self.MeterReatlTimeData.Model = 0
+                    self.MeterReatlTimeData.Serial = 0
+
+                if 'Current_AC_Phase_1' in json['Body']['Data']:
+                    self.MeterReatlTimeData.Current_AC_Phase_1 = json['Body']['Data']['Current_AC_Phase_1']
+                else:
+                    self.MeterReatlTimeData.Current_AC_Phase_1 = 0
+
+                if 'Current_AC_Phase_2' in json['Body']['Data']:
+                    self.MeterReatlTimeData.Current_AC_Phase_2 = json['Body']['Data']['Current_AC_Phase_2']
+                else:
+                    self.MeterReatlTimeData.Current_AC_Phase_2 = 0
+
+                if 'Current_AC_Phase_3' in json['Body']['Data']:
+                    self.MeterReatlTimeData.Current_AC_Phase_3 = json['Body']['Data']['Current_AC_Phase_3']
+                else:
+                    self.MeterReatlTimeData.Current_AC_Phase_3 = 0
+
+                if 'Details' in json['Body']['Data']:
+                    self.MeterReatlTimeData.Details = json['Body']['Data']['Details']
+                else:
+                    self.MeterReatlTimeData.Details = 0
+
+                if 'Enable' in json['Body']['Data']:
+                    self.MeterReatlTimeData.Enable = json['Body']['Data']['Enable']
+                else:
+                    self.MeterReatlTimeData.Enable = 0
+
+                if 'EnergyReactive_VArAC_Sum_Consumed' in json['Body']['Data']:
+                    self.MeterReatlTimeData.EnergyReactive_VArAC_Sum_Consumed = json['Body']['Data']['EnergyReactive_VArAC_Sum_Consumed']
+                else:
+                    self.MeterReatlTimeData.EnergyReactive_VArAC_Sum_Consumed = 0
+
+                if 'EnergyReactive_VArAC_Sum_Produced' in json['Body']['Data']:
+                    self.MeterReatlTimeData.EnergyReactive_VArAC_Sum_Produced = json['Body']['Data']['EnergyReactive_VArAC_Sum_Produced']
+                else:
+                    self.MeterReatlTimeData.EnergyReactive_VArAC_Sum_Produced = 0
+
+                if 'EnergyReal_WAC_Minus_Absolute' in json['Body']['Data']:
+                    self.MeterReatlTimeData.EnergyReal_WAC_Minus_Absolute = json['Body']['Data']['EnergyReal_WAC_Minus_Absolute']
+                else:
+                    self.MeterReatlTimeData.EnergyReal_WAC_Minus_Absolute = 0
+
+                if 'EnergyReal_WAC_Plus_Absolute' in json['Body']['Data']:
+                    self.MeterReatlTimeData.EnergyReal_WAC_Plus_Absolute = json['Body']['Data']['EnergyReal_WAC_Plus_Absolute']
+                else:
+                    self.MeterReatlTimeData.EnergyReal_WAC_Plus_Absolute = 0
+
+                if 'EnergyReal_WAC_Sum_Consumed' in json['Body']['Data']:
+                    self.MeterReatlTimeData.EnergyReal_WAC_Sum_Consumed = json['Body']['Data']['EnergyReal_WAC_Sum_Consumed']
+                else:
+                    self.MeterReatlTimeData.EnergyReal_WAC_Sum_Consumed = 0
+
+                if 'EnergyReal_WAC_Sum_Produced' in json['Body']['Data']:
+                    self.MeterReatlTimeData.EnergyReal_WAC_Sum_Produced = json['Body']['Data']['EnergyReal_WAC_Sum_Produced']
+                else:
+                    self.MeterReatlTimeData.EnergyReal_WAC_Sum_Produced = 0
+
+                if 'Frequency_Phase_Average' in json['Body']['Data']:
+                    self.MeterReatlTimeData.Frequency_Phase_Average = json['Body']['Data']['Frequency_Phase_Average']
+                else:
+                    self.MeterReatlTimeData.Frequency_Phase_Average = 0
+
+                if 'Meter_Location_Current' in json['Body']['Data']:
+                    self.MeterReatlTimeData.Meter_Location_Current = json['Body']['Data']['Meter_Location_Current']
+                else:
+                    self.MeterReatlTimeData.Meter_Location_Current = 0
+
+                if  'PowerApparent_S_Phase_1' in json['Body']['Data']:
+                    self.MeterReatlTimeData.PowerApparent_S_Phase_1 = json['Body']['Data']['PowerApparent_S_Phase_1']
+                else:
+                    self.MeterReatlTimeData.PowerApparent_S_Phase_1 = 0
+
+                if  'PowerApparent_S_Phase_2' in json['Body']['Data']:
+                    self.MeterReatlTimeData.PowerApparent_S_Phase_2 = json['Body']['Data']['PowerApparent_S_Phase_2']
+                else:
+                    self.MeterReatlTimeData.PowerApparent_S_Phase_2 = 0
+
+                if  'PowerApparent_S_Phase_3' in json['Body']['Data']:
+                    self.MeterReatlTimeData.PowerApparent_S_Phase_3 = json['Body']['Data']['PowerApparent_S_Phase_3']
+                else:
+                    self.MeterReatlTimeData.PowerApparent_S_Phase_3 = 0
+
+                if 'PowerApparent_S_Sum' in json['Body']['Data']:
+                    self.MeterReatlTimeData.PowerApparent_S_Sum = json['Body']['Data']['PowerApparent_S_Sum']
+                else:
+                    self.MeterReatlTimeData.PowerApparent_S_Sum = 0
+
+                if 'PowerFactor_Phase_1' in json['Body']['Data']:
+                    self.MeterReatlTimeData.PowerFactor_Phase_1 = json['Body']['Data']['PowerFactor_Phase_1']
+                else:
+                    self.MeterReatlTimeData.PowerFactor_Phase_1 = 0
+
+                if 'PowerFactor_Phase_2' in json['Body']['Data']:
+                    self.MeterReatlTimeData.PowerFactor_Phase_2= json['Body']['Data']['PowerFactor_Phase_2']
+                else:
+                    self.MeterReatlTimeData.PowerFactor_Phase_2 = 0
+
+                if 'PowerFactor_Phase_3' in json['Body']['Data']:
+                    self.MeterReatlTimeData.PowerFactor_Phase_3 = json['Body']['Data']['PowerFactor_Phase_3']
+                else:
+                    self.MeterReatlTimeData.PowerFactor_Phase_3 = 0
+
+                if 'PowerFactor_Sum' in json['Body']['Data']:
+                    self.MeterReatlTimeData.PowerFactor_Sum = json['Body']['Data']['PowerFactor_Sum']
+                else:
+                    self.MeterReatlTimeData.PowerFactor_Sum = 0
+
+                if 'PowerReactive_Q_Phase_1' in json['Body']['Data']:
+                    self.MeterReatlTimeData.PowerReactive_Q_Phase_1 = json['Body']['Data']['PowerReactive_Q_Phase_1']
+                else:
+                    self.MeterReatlTimeData.PowerReactive_Q_Phase_1 = 0
+
+                if 'PowerReactive_Q_Phase_2' in json['Body']['Data']:
+                    self.MeterReatlTimeData.PowerReactive_Q_Phase_2 = json['Body']['Data']['PowerReactive_Q_Phase_2']
+                else:
+                    self.MeterReatlTimeData.PowerReactive_Q_Phase_2 = 0
+
+                if 'PowerReactive_Q_Phase_3' in json['Body']['Data']:
+                    self.MeterReatlTimeData.PowerReactive_Q_Phase_3 = json['Body']['Data']['PowerReactive_Q_Phase_3']
+                else:
+                    self.MeterReatlTimeData.PowerReactive_Q_Phase_3 = 0
+
+                if 'PowerReactive_Q_Sum' in json['Body']['Data']:
+                    self.MeterReatlTimeData.PowerReactive_Q_Sum = json['Body']['Data']['PowerReactive_Q_Sum']
+                else:
+                    self.MeterReatlTimeData.PowerReactive_Q_Sum = 0
+
+                if 'PowerReal_P_Phase_1' in json['Body']['Data']:
+                    self.MeterReatlTimeData.PowerReal_P_Phase_1 = json['Body']['Data']['PowerReal_P_Phase_1']
+                else:
+                    self.MeterReatlTimeData.PowerReal_P_Phase_1 = 0
+
+                if 'PowerReal_P_Phase_2' in json['Body']['Data']:
+                    self.MeterReatlTimeData.PowerReal_P_Phase_2 = json['Body']['Data']['PowerReal_P_Phase_2']
+                else:
+                    self.MeterReatlTimeData.PowerReal_P_Phase_2 = 0
+
+                if 'PowerReal_P_Phase_3' in json['Body']['Data']:
+                    self.MeterReatlTimeData.PowerReal_P_Phase_3 = json['Body']['Data']['PowerReal_P_Phase_3']
+                else:
+                    self.MeterReatlTimeData.PowerReal_P_Phase_3 = 0
+
+                if 'PowerReal_P_Sum' in json['Body']['Data']:
+                    self.MeterReatlTimeData.PowerReal_P_Sum = json['Body']['Data']['PowerReal_P_Sum']
+                else:
+                    self.MeterReatlTimeData.PowerReal_P_Sum = 0
+
+                if 'TimeStamp' in json['Body']['Data']:
+                    self.MeterReatlTimeData.TimeStamp = json['Body']['Data']['TimeStamp']
+                else:
+                    self.MeterReatlTimeData.TimeStamp = 0
+
+                if 'Visible' in json['Body']['Data']:
+                    self.MeterReatlTimeData.Visible = json['Body']['Data']['Visible']
+                else:
+                    self.MeterReatlTimeData.Visible = 0
+
+                if 'Voltage_AC_PhaseToPhase_12' in json['Body']['Data']:
+                    self.MeterReatlTimeData.Voltage_AC_PhaseToPhase_12 = json['Body']['Data']['Voltage_AC_PhaseToPhase_12']
+                else:
+                    self.MeterReatlTimeData.Voltage_AC_PhaseToPhase_12 = 0
+
+                if 'Voltage_AC_PhaseToPhase_23' in json['Body']['Data']:
+                    self.MeterReatlTimeData.Voltage_AC_PhaseToPhase_23 = json['Body']['Data']['Voltage_AC_PhaseToPhase_23']
+                else:
+                    self.MeterReatlTimeData.Voltage_AC_PhaseToPhase_23 = 0
+
+                if 'Voltage_AC_PhaseToPhase_31' in json['Body']['Data']:
+                    self.MeterReatlTimeData.Voltage_AC_PhaseToPhase_31 = json['Body']['Data']['Voltage_AC_PhaseToPhase_31']
+                else:
+                    self.MeterReatlTimeData.Voltage_AC_PhaseToPhase_31 = 0
+
+                if 'Voltage_AC_Phase_1' in json['Body']['Data']:
+                    self.MeterReatlTimeData.Voltage_AC_Phase_1 = json['Body']['Data']['Voltage_AC_Phase_1']
+                else:
+                    self.MeterReatlTimeData.Voltage_AC_Phase_1 = 0
+
+                if 'Voltage_AC_Phase_2' in json['Body']['Data']:
+                    self.MeterReatlTimeData.Voltage_AC_Phase_2 = json['Body']['Data']['Voltage_AC_Phase_2']
+                else:
+                    self.MeterReatlTimeData.Voltage_AC_Phase_2 = 0
+
+                if 'Voltage_AC_Phase_3' in json['Body']['Data']:
+                    self.MeterReatlTimeData.Voltage_AC_Phase_3 = json['Body']['Data']['Voltage_AC_Phase_3']
+                else:
+                    self.MeterReatlTimeData.Voltage_AC_Phase_3 = 0
 
             except Exception as err:
                 print(err)
