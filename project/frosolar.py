@@ -3,13 +3,10 @@ Date : 19 April 2018
 @author: David Crisp
 '''
 
-#TODO       Use https://www.python-course.eu/python3_properties.php for Get and Set properties.
-#TODO       This allows the property to be updated on getting IF it is stale.   Stale might be 90 seconds.
-#TODO       This is because we cant just query a siongle property with the Fronious API.
-#TODO       We shouldnt hit the API for every property as this needlessly loads the server.
+#TODO Set each RECORD to have a timestamp of it when it was last updated.   This way we know if its still current or needs to be refreshed.
 
-#https://github.com/dcrispgit/FroSolPy/tree/master/project
-
+#   Currently Developed to support Fronius API V1, dated 03 November 2017 from PDF.
+#   http://www.fronius.com/~/downloads/Solar%20Energy/Operating%20Instructions/42%2C0410%2C2012.pdf
 
 import requests
 from collections import namedtuple
@@ -28,16 +25,24 @@ class Fronius:
     '''
 
     def __init__(self, host, useHTTPS=False, HTTPtimeout=10):
-        self.lastSuccessfullResponseTime = None     #   TimeStamp from that shows last successful query time
-        self.datatimeoutseconds = 90                #   seconds
 
+        #   Time stamp of last successful query of unit (last error code 0 returned)
+        #   TODO    This should be split out so that EVERY piece of data has its on currency record.
+        self.lastSuccessfullResponseTime = None
 
-        self.scope = "Device"                       #   Default Scope
-        self.DeviceID = 1                           #   Default Unit ID.
+        #   Define what is considered an ideal currency.
+        #   Currently set to 90 seconds but can be adjusted depending on network etc.
+        self.datatimeoutseconds = 90
+
+        #   Default scope incase not provided
+        self.scope = "Device"
+
+        #   Default Unit ID incase not provided
+        self.DeviceID = 1
 
 
         """
-        Core API / UNIT  Information
+        Storeage for Fronius Solar API version Information
         http://<hostname>/solar_api/GetAPIVersion.cgi
         """
         self.APIVersion = None
@@ -46,8 +51,8 @@ class Fronius:
 
 
         """
-        Unit Status
-        from Common Response Header for Each Query
+        Storage for Common Response Header (CRH) for each Query
+        Shows the success or fail of each query and the reasons for the failure if any.         
         """
         UnitStatusFields = ['TimeStamp', 'code', 'status', 'description', 'reason', 'usermessage']
         self.UnitStatus = namedtuple('InverterInfo', UnitStatusFields)
@@ -55,7 +60,7 @@ class Fronius:
 
 
         """
-        Inverter Information
+        Storage for Inverter Information
         http://<hostname>/solar_api/v1/GetInverterInfo.cgi
         """
         InverterInfoFields = ['CustomName','DT','ErrorCode','PVPower','Show','StatusCode','UniqueID']
@@ -64,14 +69,16 @@ class Fronius:
 
 
         """
-        Information about devices currently online
-         http://<hostname>/solar_api/v1/GetActiveDeviceInfo.cgi?DeviceClass=System
+        Storage for Information about devices currently online
+        http://<hostname>/solar_api/v1/GetActiveDeviceInfo.cgi?DeviceClass=System
         """
-        # Section 3.7 - Lots of picking here to get it right... don't have half the devices needed to actually test and read.
+        #   Section 3.7 - Lots of picking here to get it right... don't have half the devices needed to actually test and read.
+        #   One of the problem is that the API doesnt define or provide full examples of some of the less used fields in the system.
+        #   The only way to obtain them is to actually run the code against a systme.
 
 
         """
-        Logger Informtation
+        Storage for Logger Informtation
         http://<hostname>/solar_api/v1/GetLoggerInfo.cgi
         """
         LoggerInfoFields = ['C02Factor','CO2Unit','CashCurrency','CashFactor','DefaultLanguage','DeliveryFactor','HWVersion','PlatformID','ProductID','SWVersion','TimezoneLocation','TimezoneName','UTCOffset','UniqueID']
@@ -80,7 +87,7 @@ class Fronius:
 
 
         """
-        Inverter Status LEDs
+        Storage for Inverter Status LEDs
         Current status of the Inverter LEDS
         http://<hostname>solar_api/v1/GetLoggerLEDInfo.cgi
         """
@@ -97,7 +104,7 @@ class Fronius:
         self.InverterStatusLEDs.WLANLED.__new__.__defaults__ = (None,) * len(self.InverterStatusLEDs.WLANLED._fields)
 
         """
-        Inverter Realtime Data Collections        
+        Storage for Inverter Realtime Data Collections        
         One of the problems with these variables listed in the API document is they do not align exactly with what the device ACTUALLY delivers when queired.                              
         """
         # TODO   Lets just collect THESE ones first, from whartever they actually gert processed from and then I can extend to collect ALL the values in the future.
@@ -172,6 +179,8 @@ class Fronius:
         #   http://<hostname>/solar_api/v1/GetInverterRealtimeData.cgi?Scope=System&DeviceID=0&DataCollection=MinMaxInverterData
         #
         #   TODO need to test this against an inverter that has these parameters
+        #   One of the problem is that the API doesnt define or provide full examples of some of the less used fields in the system.
+        #   The only way to obtain them is to actually run the code against a systme.
 
         MinMaxInverterDataFields = ['Day_PMAX','Day_VACMAX','Day_VACMNIN','Day_VDCMax','Year_PMAX','Year_VACMAX','Year_VACMNIN','Year_VDCMax','Total_PMAX','Total_VACMAX','Total_VACMNIN','Total_VDCMax']
         MinMaxInverterDataUnitValues = ['Value','Unit','Source']
@@ -206,7 +215,7 @@ class Fronius:
         self.MinMaxInverterDatavalues.Total_VDCMax.__new__.__defaults__ = (None,) * len(self.MinMaxInverterDatavalues.Total_VDCMax._fields)
 
         """
-        MeterReraltimeData
+        Storage for MeterReraltimeData Information
         http://<hostname>/solar_api/v1/GetMeterRealtimeData.cgi?Scope=Device&DeviceID=1
         """
         MeterReatlTimeDataFields = ['Current_AC_Phase_1','Current_AC_Phase_2','Current_AC_Phase_3','Serial', 'Enable',
@@ -228,7 +237,7 @@ class Fronius:
 
 
         """
-        PowerFlowRealtimeData
+        Storage for PowerFlowRealtimeData Information
         http://<hostname>/Solar_api/v1/GetPowerFlowRealtimeData.fcgi 
         """
         #TODO We can set this up so we can add multiple inverters if they exist.
@@ -240,34 +249,48 @@ class Fronius:
         self.PowerFlowRealtimeSite.__new__.__defaults__ = (None,) * len(self.PowerFlowRealtimeSite._fields)
 
 
+        #   Hostname or IP address of the Fronius Inverter being interrogated.
         self.host = host
+
+        #   HTTP timeout.   How long to give the request to the Fronius unit before it times out and returns an error.
         self.HTTPtimeout = HTTPtimeout
+
+        #   Future Proof check.  currently the Fronius only accepts HTTP connections.  Does not support HTTPS.
         if useHTTPS:
             self.protocol = "https"
         else:
             self.protocol = "http"
 
+        #   The Version of the Fronius API as understood and returned by itself.  If it's not version 1 then we need to stop as this code only supports API V1.
+        #   Understanding is that API Version 0 is actually very old and quiote obsolete.   (The API PDF available from Fronius has the API dated at 06 August 2013.)
+        #   Woudl be interesting to understand which units out there are still on API V0 if any. I suspect they all upgrade to the latest version
         self._fetch_APIVersion()
         if (self.APIVersion != 1):
             raise ValueError('Wrong API Version.  Version {} not supported'.format(self.APIVersion))
 
-        '''
-        On first run we will go through ALL the different data collection routines... 
-        Then when we query it later we only query what we want. 
-        '''
-        # self._getInverterinfo()
-        # self._getLoggerInfo()
-        # self._getPowerFlowRealtimeData()
-        # self._GetInverterRealtimeData(self.scope, self.DeviceID, 'CumulationInverterData')
-        # self._GetInverterRealtimeData(self.scope, self.DeviceID, 'CommonInverterData')
-        # self._GetInverterRealtimeData(self.scope, self.DeviceID, '3PInverterData')
-        # self._GetInverterRealtimeData(self.scope, self.DeviceID, 'MinMaxInverterData')
-        # self._GetActiveDeviceInfo()
+
+
+        #   Execute each of the data collection methods to populate the initial set of data on first run of class.
+        #   This can take several seconds.
+        #
+        #   Could put a loop for one of the methods that does the same thing with different datacollections but
+        #   its easier / neater /  just more obvious to call the method 4 times outside a loop.
+
+        #TODO put a time start and time end for running all methods.   Just for interests sake.
+        self._getInverterinfo()
+        self._getLoggerInfo()
+        self._getPowerFlowRealtimeData()
+
+        self._GetInverterRealtimeData(self.scope, self.DeviceID, 'CumulationInverterData')
+        self._GetInverterRealtimeData(self.scope, self.DeviceID, 'CommonInverterData')
+        self._GetInverterRealtimeData(self.scope, self.DeviceID, '3PInverterData')
+        self._GetInverterRealtimeData(self.scope, self.DeviceID, 'MinMaxInverterData')
+        self._GetActiveDeviceInfo()
         self._GetMeterRealtimeData()
 
     #-------------------------------------------------------------------------------------------------------------------
     """
-    By using a property decorator and the following properties wqe can trigger off updates if the data is stale when its queired. 
+    By using a property decorator and the following properties we can trigger off updates if the data is stale when its queired. 
     If the data is still within a set "currency" time then it will just return the data the system already has.
     
     used documentation at https://www.python-course.eu/python3_properties.php for @property 
