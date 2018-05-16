@@ -1149,11 +1149,11 @@ class Fronius:
 
                 self.MinMaxInverterDatavalues.Year_PMAX.Value = 0
                 self.MinMaxInverterDatavalues.Year_PMAX.lastupdated = None
-                self.MinMaxInverterDatavalues.Year_VACMAX.Value = 0
-                self.MinMaxInverterDatavalues.Year_VDCMax.lastupdated = None
                 self.MinMaxInverterDatavalues.Year_VACMNIN.Value = 0
                 self.MinMaxInverterDatavalues.Year_VACMNIN.lastupdated = None
                 self.MinMaxInverterDatavalues.Year_VACMAX.Value = 0
+                self.MinMaxInverterDatavalues.Year_VACMAX.lastupdated = None
+                self.MinMaxInverterDatavalues.Year_VDCMax.Value = 0
                 self.MinMaxInverterDatavalues.Year_VDCMax.lastupdated = None
                 #
                 self.MinMaxInverterDatavalues.Total_PMAX.Value = 0
@@ -1177,11 +1177,11 @@ class Fronius:
 
             self.MinMaxInverterDatavalues.Year_PMAX.Value = 0
             self.MinMaxInverterDatavalues.Year_PMAX.lastupdated = None
-            self.MinMaxInverterDatavalues.Year_VACMAX.Value = 0
-            self.MinMaxInverterDatavalues.Year_VDCMax.lastupdated = None
             self.MinMaxInverterDatavalues.Year_VACMNIN.Value = 0
             self.MinMaxInverterDatavalues.Year_VACMNIN.lastupdated = None
             self.MinMaxInverterDatavalues.Year_VACMAX.Value = 0
+            self.MinMaxInverterDatavalues.Year_VACMAX.lastupdated = None
+            self.MinMaxInverterDatavalues.Year_VDCMax.Value = 0
             self.MinMaxInverterDatavalues.Year_VDCMax.lastupdated = None
             #
             self.MinMaxInverterDatavalues.Total_PMAX.Value = 0
