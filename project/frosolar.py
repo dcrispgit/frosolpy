@@ -92,7 +92,7 @@ class Fronius:
         http://<hostname>solar_api/v1/GetLoggerLEDInfo.cgi
         """
         InverterStatusLEDFields = ['powerLED','SolarNetLED','SolarWebLED','WLANLED']
-        LEDinfoFields = ['Color','State','Source']
+        LEDinfoFields = ['Color','State','lastupdated']
         self.InverterStatusLEDs = namedtuple('InverterStatusLEDs',InverterStatusLEDFields)
         self.InverterStatusLEDs.powerLED = namedtuple('powerLED',LEDinfoFields)       # GetLoggerLEDInfo.cgi - PowerLED
         self.InverterStatusLEDs.powerLED.__new__.__defaults__ = (None,) * len(self.InverterStatusLEDs.powerLED._fields)
@@ -116,8 +116,8 @@ class Fronius:
         #   I COULD convert it to V for Voltage.   It would probably make this tool slightly more functional for English speakers.
         #
         CommonInverterFields = ['PAC','SAC','IAC','VAC','FAC','IDC','VDC','Day_Energy','Year_Energy','Total_Energy','DeviceStatus']
-        CommonDeviceStatusFields = ['ErrorCode','LEDColor','LEDState','MgmtTimerRemainingTime','StateToReset','StatusCode']
-        CommonInverterValuesUnitValues = ['Value','Unit','Source']
+        CommonDeviceStatusFields = ['ErrorCode','LEDColor','LEDState','MgmtTimerRemainingTime','StateToReset','StatusCode','lastupdated']
+        CommonInverterValuesUnitValues = ['Value','Unit','lastupdated']
         self.CommonInverterValues = namedtuple('CommonInverterValues',CommonInverterFields)
         self.CommonInverterValues.PAC = namedtuple('CommonInverterValuesUnitValues',CommonInverterValuesUnitValues)  #   THIS IS COMMON!  so all records will use this one.
         self.CommonInverterValues.PAC.__new__.__defaults__ = (None,) * len(self.CommonInverterValues.PAC._fields)
@@ -146,7 +146,7 @@ class Fronius:
         #   http://<hostname>/solar_api/v1/GetInverterRealtimeData.cgi?Scope=System&DeviceID=0&DataCollection=3PInverterData
         #
         ThreePhaseinverterFields = ['IAC_L1','IAC_L2','IAC_L3','VAC_PH1','VAC_PH2','VAC_PH3','T_Ambient','Rotation_Speed_Fan_FL','Rotation_Speed_Fan_FR','Rotation_Speed_Fan_BL','Rotation_Speed_Fan_BR']
-        ThreePhaseinverterUnitValues = ['Value','Unit','Source']
+        ThreePhaseinverterUnitValues = ['Value','Unit','lastupdated']
         self.ThreePhaseinverterValues = namedtuple('ThreePhaseinverterValues',ThreePhaseinverterFields)
         self.ThreePhaseinverterValues.IAC_L1 = namedtuple('ThreePhaseinverterUnitValues',ThreePhaseinverterUnitValues)
         self.ThreePhaseinverterValues.IAC_L1.__new__.__defaults__ = (None,) * len(self.ThreePhaseinverterValues.IAC_L1._fields)
@@ -183,7 +183,7 @@ class Fronius:
         #   The only way to obtain them is to actually run the code against a systme.
 
         MinMaxInverterDataFields = ['Day_PMAX','Day_VACMAX','Day_VACMNIN','Day_VDCMax','Year_PMAX','Year_VACMAX','Year_VACMNIN','Year_VDCMax','Total_PMAX','Total_VACMAX','Total_VACMNIN','Total_VDCMax']
-        MinMaxInverterDataUnitValues = ['Value','Unit','Source']
+        MinMaxInverterDataUnitValues = ['Value','Unit','lastupdated']
 
         self.MinMaxInverterDatavalues = namedtuple('MinMaxInverterDataFields',MinMaxInverterDataFields)
 
@@ -218,6 +218,7 @@ class Fronius:
         Storage for MeterReraltimeData Information
         http://<hostname>/solar_api/v1/GetMeterRealtimeData.cgi?Scope=Device&DeviceID=1
         """
+        #TODO add a last updated field here
         MeterReatlTimeDataFields = ['Current_AC_Phase_1','Current_AC_Phase_2','Current_AC_Phase_3','Serial', 'Enable',
                                     'EnergyReactive_VArAC_Sum_Consumed','EnergyReactive_VArAC_Sum_Produced',
                                     'EnergyReal_WAC_Minus_Absolute', 'EnergyReal_WAC_Plus_Absolute',
@@ -240,6 +241,7 @@ class Fronius:
         Storage for PowerFlowRealtimeData Information
         http://<hostname>/Solar_api/v1/GetPowerFlowRealtimeData.fcgi 
         """
+        #TODO add a last updated field here
         #TODO We can set this up so we can add multiple inverters if they exist.
         # eg: PowerFlowRealtion inverters ---Inverter 1
         #                                  ---Inverter 2
@@ -792,38 +794,38 @@ class Fronius:
             if 'PowerLED' in json['Body']['Data']:
                 self.InverterStatusLEDs.powerLED.Color = json['Body']['Data']['PowerLED']['Color']
                 self.InverterStatusLEDs.powerLED.State = json['Body']['Data']['PowerLED']['State']
-                self.InverterStatusLEDs.powerLED.source = 'system'
+                self.InverterStatusLEDs.powerLED.lastupdated = datetime.datetime.utcnow().timestamp()
             else:
                 self.InverterStatusLEDs.powerLED.Color = 0
                 self.InverterStatusLEDs.powerLED.State = 0
-                self.InverterStatusLEDs.powerLED.source = 'NA'
+                self.InverterStatusLEDs.powerLED.lastupdated = False
 
             if 'SolarNetLED' in json['Body']['Data']:
                 self.InverterStatusLEDs.SolarNetLED.Color = json['Body']['Data']['SolarNetLED']['Color']
                 self.InverterStatusLEDs.SolarNetLED.State = json['Body']['Data']['SolarNetLED']['State']
-                self.InverterStatusLEDs.SolarNetLED.source = 'system'
+                self.InverterStatusLEDs.SolarNetLED.lastupdated = datetime.datetime.utcnow().timestamp()
             else:
                 self.InverterStatusLEDs.SolarNetLED.Color = 0
                 self.InverterStatusLEDs.SolarNetLED.State = 0
-                self.InverterStatusLEDs.SolarNetLED.source = 'NA'
+                self.InverterStatusLEDs.SolarNetLED.lastupdated = False
 
             if 'SolarWebLED' in json['Body']['Data']:
                 self.InverterStatusLEDs.SolarWebLED.Color = json['Body']['Data']['SolarWebLED']['Color']
                 self.InverterStatusLEDs.SolarWebLED.State = json['Body']['Data']['SolarWebLED']['State']
-                self.InverterStatusLEDs.SolarWebLED.source = 'system'
+                self.InverterStatusLEDs.SolarWebLED.lastupdated = datetime.datetime.utcnow().timestamp()
             else:
                 self.InverterStatusLEDs.SolarWebLED.Color = 0
                 self.InverterStatusLEDs.SolarWebLED.State = 0
-                self.InverterStatusLEDs.SolarWebLED.source = 'NA'
+                self.InverterStatusLEDs.SolarWebLED.lastupdated = False
 
             if 'WLANLED' in json['Body']['Data']:
                 self.InverterStatusLEDs.WLANLED.Color = json['Body']['Data']['WLANLED']['Color']
                 self.InverterStatusLEDs.WLANLED.State = json['Body']['Data']['WLANLED']['State']
-                self.InverterStatusLEDs.WLANLED.source = 'system'
+                self.InverterStatusLEDs.WLANLED.lastupdated = datetime.datetime.utcnow().timestamp()
             else:
                 self.InverterStatusLEDs.WLANLED.Color = 0
                 self.InverterStatusLEDs.WLANLED.State = 0
-                self.InverterStatusLEDs.WLANLED.source = 'NA'
+                self.InverterStatusLEDs.WLANLED.lastupdated = False
         else:
             print("Unable to retrieve data")
             #TODO Proper Error Handling here.
@@ -867,83 +869,83 @@ class Fronius:
                 if 'PAC' in  json['Body']['Data']:
                     self.CommonInverterValues.PAC.Value = json['Body']['Data']['PAC']['Value']
                     self.CommonInverterValues.PAC.Unit = json['Body']['Data']['PAC']['Unit']
-                    self.CommonInverterValues.PAC.source = 'system'
+                    self.CommonInverterValues.PAC.lastupdated = datetime.datetime.utcnow().timestamp()
                 else:
                     self.CommonInverterValues.PAC.Value = 0
                     self.CommonInverterValues.PAC.Unit = 0
-                    self.CommonInverterValues.PAC.source = 'NA'
+                    self.CommonInverterValues.PAC.lastupdated = False
 
                 if 'SAC' in  json['Body']['Data']:
                     self.CommonInverterValues.SAC.Value = json['Body']['Data']['SAC']['Value']
                     self.CommonInverterValues.SAC.Unit = json['Body']['Data']['SAC']['Unit']
-                    self.CommonInverterValues.SAC.source = 'system'
+                    self.CommonInverterValues.SAC.lastupdated = datetime.datetime.utcnow().timestamp()
                 else:
                     self.CommonInverterValues.SAC.Value = 0
                     self.CommonInverterValues.SAC.Unit = 0
-                    self.CommonInverterValues.SAC.source = 'NA'
+                    self.CommonInverterValues.SAC.lastupdated = False
 
                 if 'IAC' in  json['Body']['Data']:
                     self.CommonInverterValues.IAC.Value = json['Body']['Data']['IAC']['Value']
                     self.CommonInverterValues.IAC.Unit = json['Body']['Data']['IAC']['Unit']
-                    self.CommonInverterValues.IAC.source = 'system'
+                    self.CommonInverterValues.IAC.lastupdated = datetime.datetime.utcnow().timestamp()
                 else:
                     self.CommonInverterValues.IAC.Value = 0
                     self.CommonInverterValues.IAC.Unit = 0
-                    self.CommonInverterValues.IAC.source = 'NA'
+                    self.CommonInverterValues.IAC.lastupdated = False
 
                 if 'UAC' in  json['Body']['Data']:
                     self.CommonInverterValues.VAC.Value = json['Body']['Data']['UAC']['Value']
                     self.CommonInverterValues.VAC.Unit = json['Body']['Data']['UAC']['Unit']
-                    self.CommonInverterValues.VAC.source = 'system'
+                    self.CommonInverterValues.VAC.lastupdated = datetime.datetime.utcnow().timestamp()
                 else:
                     self.CommonInverterValues.VAC.Value = 0
                     self.CommonInverterValues.VAC.Unit = 0
-                    self.CommonInverterValues.VAC.source = 'NA'
+                    self.CommonInverterValues.VAC.lastupdated = False
 
                 if 'IDC' in  json['Body']['Data']:
                     self.CommonInverterValues.IDC.Value = json['Body']['Data']['IDC']['Value']
                     self.CommonInverterValues.IDC.Unit = json['Body']['Data']['IDC']['Unit']
-                    self.CommonInverterValues.IDC.source = 'system'
+                    self.CommonInverterValues.IDC.lastupdated = datetime.datetime.utcnow().timestamp()
                 else:
                     self.CommonInverterValues.IDC.Value = 0
                     self.CommonInverterValues.IDC.Unit = 0
-                    self.CommonInverterValues.IDC.source = 'NA'
+                    self.CommonInverterValues.IDC.lastupdated = False
 
                 if 'UDC' in  json['Body']['Data']:
                     self.CommonInverterValues.VDC.Value = json['Body']['Data']['UDC']['Value']
                     self.CommonInverterValues.VDC.Unit = json['Body']['Data']['UDC']['Unit']
-                    self.CommonInverterValues.VDC.source = 'system'
+                    self.CommonInverterValues.VDC.lastupdated = datetime.datetime.utcnow().timestamp()
                 else:
                     self.CommonInverterValues.VDC.Value = 0
                     self.CommonInverterValues.VDC.Unit = 0
-                    self.CommonInverterValues.VDC.source = 'NA'
+                    self.CommonInverterValues.VDC.lastupdated = False
 
                 if 'DAY_ENERGY' in  json['Body']['Data']:
                     self.CommonInverterValues.Day_Energy.Value = json['Body']['Data']['DAY_ENERGY']['Value']
                     self.CommonInverterValues.Day_Energy.Unit = json['Body']['Data']['DAY_ENERGY']['Unit']
-                    self.CommonInverterValues.Day_Energy.source = 'system'
+                    self.CommonInverterValues.Day_Energy.lastupdated = datetime.datetime.utcnow().timestamp()
                 else:
                     self.CommonInverterValues.Day_Energy.Value = 0
                     self.CommonInverterValues.Day_Energy.Unit = 0
-                    self.CommonInverterValues.Day_Energy.source = 'NA'
+                    self.CommonInverterValues.Day_Energy.lastupdated = False
 
                 if 'YEAR_ENERGY' in  json['Body']['Data']:
                     self.CommonInverterValues.Year_Energy.Value = json['Body']['Data']['YEAR_ENERGY']['Value']
                     self.CommonInverterValues.Year_Energy.Unit = json['Body']['Data']['YEAR_ENERGY']['Unit']
-                    self.CommonInverterValues.Year_Energy.source = 'system'
+                    self.CommonInverterValues.Year_Energy.lastupdated = datetime.datetime.utcnow().timestamp()
                 else:
                     self.CommonInverterValues.Year_Energy.Value = 0
                     self.CommonInverterValues.Year_Energy.Unit = 0
-                    self.CommonInverterValues.Year_Energy.source = 'NA'
+                    self.CommonInverterValues.Year_Energy.lastupdated = False
 
                 if 'TOTAL_ENERGY' in  json['Body']['Data']:
                     self.CommonInverterValues.Total_Energy.Value = json['Body']['Data']['TOTAL_ENERGY']['Value']
                     self.CommonInverterValues.Total_Energy.Unit = json['Body']['Data']['TOTAL_ENERGY']['Unit']
-                    self.CommonInverterValues.Total_Energy.source = 'system'
+                    self.CommonInverterValues.Total_Energy.lastupdated = datetime.datetime.utcnow().timestamp()
                 else:
                     self.CommonInverterValues.Total_Energy.Value = 0
                     self.CommonInverterValues.Total_Energy.Unit = 0
-                    self.CommonInverterValues.Total_Energy.source = 'NA'
+                    self.CommonInverterValues.Total_Energy.lastupdated = False
 
                 if 'DeviceStatus' in  json['Body']['Data']:
                     self.CommonInverterValues.DeviceStatus.ErrorCode = json['Body']['Data']['DeviceStatus']['ErrorCode']
@@ -952,6 +954,8 @@ class Fronius:
                     self.CommonInverterValues.DeviceStatus.MgmtTimerRemainingTime = json['Body']['Data']['DeviceStatus']['MgmtTimerRemainingTime']
                     self.CommonInverterValues.DeviceStatus.StateToReset = json['Body']['Data']['DeviceStatus']['StateToReset']
                     self.CommonInverterValues.DeviceStatus.StatusCode = json['Body']['Data']['DeviceStatus']['StatusCode']
+                    self.CommonInverterValues.DeviceStatus.lastupdated = datetime.datetime.utcnow().timestamp()
+
             except KeyError:
                 raise ValueError('[{url}] Expected JSON KEY not available.  No Data Returned:'.format(url = url))
             except:
@@ -963,101 +967,101 @@ class Fronius:
                 if 'IAC_L1' in  json['Body']['Data']:
                     self.ThreePhaseinverterValues.IAC_L1.Value = json['Body']['Data']['IAC_L1']['Value']
                     self.ThreePhaseinverterValues.IAC_L1.Unit = json['Body']['Data']['IAC_L1']['Unit']
-                    self.ThreePhaseinverterValues.IAC_L1.source = 'system'
+                    self.ThreePhaseinverterValues.IAC_L1.lastupdated = datetime.datetime.utcnow().timestamp()
                 else:
                     self.ThreePhaseinverterValues.IAC_L1.Value = 0
                     self.ThreePhaseinverterValues.IAC_L1.Unit = 0
-                    self.ThreePhaseinverterValues.IAC_L1.source = 'NA'
+                    self.ThreePhaseinverterValues.IAC_L1.lastupdated = False
 
                 if 'IAC_L2' in  json['Body']['Data']:
                     self.ThreePhaseinverterValues.IAC_L2.Value = json['Body']['Data']['IAC_L2']['Value']
                     self.ThreePhaseinverterValues.IAC_L2.Unit = json['Body']['Data']['IAC_L2']['Unit']
-                    self.ThreePhaseinverterValues.IAC_L2.source = 'system'
+                    self.ThreePhaseinverterValues.IAC_L2.lastupdated = datetime.datetime.utcnow().timestamp()
                 else:
                     self.ThreePhaseinverterValues.IAC_L2.Value = 0
                     self.ThreePhaseinverterValues.IAC_L2.Unit = 0
-                    self.ThreePhaseinverterValues.IAC_L2.source = 'NA'
+                    self.ThreePhaseinverterValues.IAC_L2.lastupdated = False
 
                 if 'IAC_L3' in  json['Body']['Data']:
                     self.ThreePhaseinverterValues.IAC_L3.Value = json['Body']['Data']['IAC_L3']['Value']
                     self.ThreePhaseinverterValues.IAC_L3.Unit = json['Body']['Data']['IAC_L3']['Unit']
-                    self.ThreePhaseinverterValues.IAC_L3.source = 'system'
+                    self.ThreePhaseinverterValues.IAC_L3.lastupdated = datetime.datetime.utcnow().timestamp()
                 else:
                     self.ThreePhaseinverterValues.IAC_L3.Value = 0
                     self.ThreePhaseinverterValues.IAC_L3.Unit = 0
-                    self.ThreePhaseinverterValues.IAC_L3.source = 'NA'
+                    self.ThreePhaseinverterValues.IAC_L3.lastupdated = False
 
                 if 'UAC_L1' in  json['Body']['Data']:
                     self.ThreePhaseinverterValues.VAC_PH1.Value = json['Body']['Data']['UAC_L1']['Value']
                     self.ThreePhaseinverterValues.VAC_PH1.Unit = json['Body']['Data']['UAC_L1']['Unit']
-                    self.ThreePhaseinverterValues.VAC_PH1.source = 'system'
+                    self.ThreePhaseinverterValues.VAC_PH1.lastupdated = datetime.datetime.utcnow().timestamp()
                 else:
                     self.ThreePhaseinverterValues.VAC_PH1.Value = 0
                     self.ThreePhaseinverterValues.VAC_PH1.Unit = 0
-                    self.ThreePhaseinverterValues.VAC_PH1.source = 'NA'
+                    self.ThreePhaseinverterValues.VAC_PH1.lastupdated = False
 
                 if 'UAC_L2' in  json['Body']['Data']:
                     self.ThreePhaseinverterValues.VAC_PH2.Value = json['Body']['Data']['UAC_L2']['Value']
                     self.ThreePhaseinverterValues.VAC_PH2.Unit = json['Body']['Data']['UAC_L2']['Unit']
-                    self.ThreePhaseinverterValues.VAC_PH2.source = 'system'
+                    self.ThreePhaseinverterValues.VAC_PH2.lastupdated = datetime.datetime.utcnow().timestamp()
                 else:
                     self.ThreePhaseinverterValues.VAC_PH2.Value = 0
                     self.ThreePhaseinverterValues.VAC_PH2.Unit = 0
-                    self.ThreePhaseinverterValues.VAC_PH2.source = 'NA'
+                    self.ThreePhaseinverterValues.VAC_PH2.lastupdated = False
 
                 if 'UAC_L3' in  json['Body']['Data']:
                     self.ThreePhaseinverterValues.VAC_PH3.Value = json['Body']['Data']['UAC_L3']['Value']
                     self.ThreePhaseinverterValues.VAC_PH3.Unit = json['Body']['Data']['UAC_L3']['Unit']
-                    self.ThreePhaseinverterValues.VAC_PH3.source = 'system'
+                    self.ThreePhaseinverterValues.VAC_PH3.lastupdated = datetime.datetime.utcnow().timestamp()
                 else:
                     self.ThreePhaseinverterValues.VAC_PH3.Value = 0
                     self.ThreePhaseinverterValues.VAC_PH3.Unit = 0
-                    self.ThreePhaseinverterValues.VAC_PH3.source = 'NA'
+                    self.ThreePhaseinverterValues.VAC_PH3.lastupdated = False
 
                 if 'T_Ambient' in  json['Body']['Data']:
                     self.ThreePhaseinverterValues.T_Ambient.Value = json['Body']['Data']['T_Ambient']['Value']
                     self.ThreePhaseinverterValues.T_Ambient.Unit = json['Body']['Data']['T_Ambient']['Unit']
-                    self.ThreePhaseinverterValues.T_Ambient.source = 'system'
+                    self.ThreePhaseinverterValues.T_Ambient.lastupdated = datetime.datetime.utcnow().timestamp()
                 else:
                     self.ThreePhaseinverterValues.T_Ambient.Value = 0
                     self.ThreePhaseinverterValues.T_Ambient.Unit = 0
-                    self.ThreePhaseinverterValues.T_Ambient.source = 'NA'
+                    self.ThreePhaseinverterValues.T_Ambient.lastupdated = False
 
                 if 'Rotation_Speed_Fan_FR' in  json['Body']['Data']:
                     self.ThreePhaseinverterValues.Rotation_Speed_Fan_FR.Value = json['Body']['Data']['Rotation_Speed_Fan_FR']['Value']
                     self.ThreePhaseinverterValues.Rotation_Speed_Fan_FR.Unit = json['Body']['Data']['Rotation_Speed_Fan_FR']['Unit']
-                    self.ThreePhaseinverterValues.Rotation_Speed_Fan_FR.source = 'system'
+                    self.ThreePhaseinverterValues.Rotation_Speed_Fan_FR.lastupdated = datetime.datetime.utcnow().timestamp()
                 else:
                     self.ThreePhaseinverterValues.Rotation_Speed_Fan_FR.Value = 0
                     self.ThreePhaseinverterValues.Rotation_Speed_Fan_FR.Unit = 0
-                    self.ThreePhaseinverterValues.Rotation_Speed_Fan_FR.source = 'NA'
+                    self.ThreePhaseinverterValues.Rotation_Speed_Fan_FR.lastupdated = False
 
                 if 'Rotation_Speed_Fan_FL' in  json['Body']['Data']:
                     self.ThreePhaseinverterValues.Rotation_Speed_Fan_FL.Value = json['Body']['Data']['Rotation_Speed_Fan_FL']['Value']
                     self.ThreePhaseinverterValues.Rotation_Speed_Fan_FL.Unit = json['Body']['Data']['Rotation_Speed_Fan_FL']['Unit']
-                    self.ThreePhaseinverterValues.Rotation_Speed_Fan_FL.source = 'system'
+                    self.ThreePhaseinverterValues.Rotation_Speed_Fan_FL.lastupdated = datetime.datetime.utcnow().timestamp()
                 else:
                     self.ThreePhaseinverterValues.Rotation_Speed_Fan_FL.Value = 0
                     self.ThreePhaseinverterValues.Rotation_Speed_Fan_FL.Unit = 0
-                    self.ThreePhaseinverterValues.Rotation_Speed_Fan_FL.source = 'NA'
+                    self.ThreePhaseinverterValues.Rotation_Speed_Fan_FL.lastupdated = False
 
                 if 'Rotation_Speed_Fan_BR' in  json['Body']['Data']:
                     self.ThreePhaseinverterValues.Rotation_Speed_Fan_BR.Value = json['Body']['Data']['Rotation_Speed_Fan_BR']['Value']
                     self.ThreePhaseinverterValues.Rotation_Speed_Fan_BR.Unit = json['Body']['Data']['Rotation_Speed_Fan_BR']['Unit']
-                    self.ThreePhaseinverterValues.Rotation_Speed_Fan_BR.source = 'system'
+                    self.ThreePhaseinverterValues.Rotation_Speed_Fan_BR.lastupdated = datetime.datetime.utcnow().timestamp()
                 else:
                     self.ThreePhaseinverterValues.Rotation_Speed_Fan_BR.Value = 0
                     self.ThreePhaseinverterValues.Rotation_Speed_Fan_BR.Unit = 0
-                    self.ThreePhaseinverterValues.Rotation_Speed_Fan_BR.source = 'NA'
+                    self.ThreePhaseinverterValues.Rotation_Speed_Fan_BR.lastupdated = False
 
                 if 'Rotation_Speed_Fan_BL' in  json['Body']['Data']:
                     self.ThreePhaseinverterValues.Rotation_Speed_Fan_BL.Value = json['Body']['Data']['Rotation_Speed_Fan_BL']['Value']
                     self.ThreePhaseinverterValues.Rotation_Speed_Fan_BL.Unit = json['Body']['Data']['Rotation_Speed_Fan_BL']['Unit']
-                    self.ThreePhaseinverterValues.Rotation_Speed_Fan_BL.source = 'system'
+                    self.ThreePhaseinverterValues.Rotation_Speed_Fan_BL.lastupdated = datetime.datetime.utcnow().timestamp()
                 else:
                     self.ThreePhaseinverterValues.Rotation_Speed_Fan_BL.Value = 0
                     self.ThreePhaseinverterValues.Rotation_Speed_Fan_BL.Unit = 0
-                    self.ThreePhaseinverterValues.Rotation_Speed_Fan_BL.source = 'NA'
+                    self.ThreePhaseinverterValues.Rotation_Speed_Fan_BL.lastupdated = False
             except KeyError:
                 raise ValueError('[{url}] Expected JSON KEY not available.  No Data Returned:'.format(url = url))
             except:
@@ -1482,6 +1486,7 @@ class Fronius:
         url = "{protocol}://{host}/{baseurl}/GetStorageRealtimeData.cgi?Scope={Scope}&DeviceID={DeviceID}".format(protocol=self.protocol, host=self.host, baseurl=self.BaseURL, Scope=Scope, DeviceID=DeviceID)
         json = self._GetJSONData(url)
         # TODO Process this data
+        return 'Not implemented'
 
     #-------------------------------------------------------------------------------------------------------------------
     def _getOhmPilotRealtimeData(self, Scope, DeviceID):
@@ -1495,6 +1500,7 @@ class Fronius:
         json = self._GetJSONData(url)
 
         #TODO
+        return 'Not implemented'
 
     #-------------------------------------------------------------------------------------------------------------------
     def _getGetArchiveData(self, Scope = None, SeriesType = 'Detail', HumanReadable = True, StartDate = None, EndDate = None, Channel = None, DeviceClass = None, DeviceID = '0'):
@@ -1518,6 +1524,7 @@ class Fronius:
         url = ("{protocol}://{host}/{baseurl}/GetArchiveData.cgi?Scope={Scope}&SeriesType={SeriesType}&HumanReadable={HumanReadable}&StartDate={StartDate}&EndDate={EndDate}&Channel={Channel}&DeviceClass={DeviceClass}&DeviceID={DeviceID}"
                .format(protocol=self.protocol, host=self.host, baseurl=self.BaseURL, Scope = Scope, SeriesType=SeriesType,HumanReadable=HumanReadable, StartDate=StartDate, EndDate = EndDate, Channel=Channel, DeviceClass=DeviceClass, DeviceID=DeviceID))
         json = self._GetJSONData(url)
+        return 'Not implemented'
 
 
 #-----------------------------------------------------------------------------------------------------------------------
@@ -1541,7 +1548,7 @@ if __name__ == "__main__":
 
     # print(fronius.ACPower)
     # print(fronius.Day_Energy)
-    # print(fronius.ACPower)
+    print(fronius.ACPower)
 
     # fronius._GetGetArchiveData(Scope='System',Channel='EnergyReal_WAC_Sum_Produced',DeviceClass='Inverter',DeviceID='0')
 
