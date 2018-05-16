@@ -939,6 +939,15 @@ class Fronius:
                     self.CommonInverterValues.IDC.Unit = 0
                     self.CommonInverterValues.IDC.lastupdated = None
 
+                if 'FAC' in  json['Body']['Data']:
+                    self.CommonInverterValues.FAC.Value = json['Body']['Data']['FAC']['Value']
+                    self.CommonInverterValues.FAC.Unit = json['Body']['Data']['FAC']['Unit']
+                    self.CommonInverterValues.FAC.lastupdated = datetime.datetime.utcnow().timestamp()
+                else:
+                    self.CommonInverterValues.FAC.Value = 0
+                    self.CommonInverterValues.FAC.Unit = 0
+                    self.CommonInverterValues.FAC.lastupdated = None
+
                 if 'UDC' in  json['Body']['Data']:
                     self.CommonInverterValues.VDC.Value = json['Body']['Data']['UDC']['Value']
                     self.CommonInverterValues.VDC.Unit = json['Body']['Data']['UDC']['Unit']
@@ -1642,8 +1651,38 @@ if __name__ == "__main__":
     # print(fronius.ACPower)
     # print(fronius.Day_Energy)
     # print(fronius.ACPower)
-    print(fronius.Day_PowerMAX)
-    # print(fronius.Year_PowerMAX)
+    print('ACCurrent', fronius.ACCurrent)
+    print('ACcurrentPH1', fronius.ACcurrentPH1)
+    print('ACcurrentPH2', fronius.ACcurrentPH2)
+    print('ACcurrentPH3', fronius.ACcurrentPH3)
+    print('ACFrequency', fronius.ACFrequency)
+    print('ACPower', fronius.ACPower)
+    print('ACVoltage', fronius.ACVoltage)
+    print('ACVoltsPH1', fronius.ACVoltsPH1)
+    print('ACVoltsPH1', fronius.ACVoltsPH1)
+    print('ACVoltsPH2', fronius.ACVoltsPH2)
+    print('AmbientTemp', fronius.AmbientTemp)
+    print('Day_Energy', fronius.Day_Energy)
+    print('Day_PowerMAX', fronius.Day_PowerMAX)
+    print('Day_VoltageACMAX', fronius.Day_VoltageACMAX)
+    print('Day_VoltageACMIN', fronius.Day_VoltageACMIN)
+    print('Day_VoltageDCMAX', fronius.Day_VoltageDCMAX)
+    print('DCCurrent', fronius.DCCurrent)
+    print('DCVoltage', fronius.DCVoltage)
+    print('Rotation_Speed_Fan_BL', fronius.Rotation_Speed_Fan_BL)
+    print('Rotation_Speed_Fan_BR', fronius.Rotation_Speed_Fan_BR)
+    print('Rotation_Speed_Fan_FL', fronius.Rotation_Speed_Fan_FL)
+    print('Rotation_Speed_Fan_FR', fronius.Rotation_Speed_Fan_FR)
+    print('Total_Energy', fronius.Total_Energy)
+    print('Total_PowerMAX', fronius.Total_PowerMAX)
+    print('Total_VoltageACMAX', fronius.Total_VoltageACMAX)
+    print('Total_VoltageACMIN', fronius.Total_VoltageACMIN)
+    print('Total_VoltageDCMAX', fronius.Total_VoltageDCMAX)
+    print('Year_Energy', fronius.Year_Energy)
+    print('Year_PowerMAX', fronius.Year_PowerMAX)
+    print('Year_VoltageACMAX', fronius.Year_VoltageACMAX)
+    print('Year_VoltageACMIN', fronius.Year_VoltageACMIN)
+    print('Year_VoltageDCMAX', fronius.Year_VoltageDCMAX)
 
     # fronius._GetGetArchiveData(Scope='System',Channel='EnergyReal_WAC_Sum_Produced',DeviceClass='Inverter',DeviceID='0')
 
