@@ -297,9 +297,12 @@ class Fronius:
     
     used documentation at https://www.python-course.eu/python3_properties.php for @property 
     """
+
+    #TODO   Need to change the way with which data currency is checked.
+
     @property
     def ACPower(self):
-        if (self._checkdatacurrency):
+        if (self._checkdatacurrency(self.CommonInverterValues.PAC)):
             return self.CommonInverterValues.PAC.Value
         else:
             self._GetInverterRealtimeData(self.scope, self.DeviceID, 'CommonInverterData')
@@ -307,7 +310,7 @@ class Fronius:
 
     @property
     def Day_Energy(self):
-        if (self._checkdatacurrency):
+        if (self._checkdatacurrency(self.CommonInverterValues.Day_Energy)):
             return self.CommonInverterValues.Day_Energy.Value
         else:
             self._GetInverterRealtimeData(self.scope, self.DeviceID, 'CommonInverterData')
@@ -315,7 +318,7 @@ class Fronius:
 
     @property
     def Year_Energy(self):
-        if (self._checkdatacurrency):
+        if (self._checkdatacurrency(self.CommonInverterValues.Year_Energy)):
             return self.CommonInverterValues.Year_Energy.Value
         else:
             self._GetInverterRealtimeData(self.scope, self.DeviceID, 'CommonInverterData')
@@ -323,7 +326,7 @@ class Fronius:
 
     @property
     def Total_Energy(self):
-        if (self._checkdatacurrency):
+        if (self._checkdatacurrency(self.CommonInverterValues.Total_Energy)):
             return self.CommonInverterValues.Total_Energy.Value
         else:
             self._GetInverterRealtimeData(self.scope, self.DeviceID, 'CommonInverterData')
@@ -331,7 +334,7 @@ class Fronius:
 
     @property
     def ACCurrent(self):
-        if (self._checkdatacurrency):
+        if (self._checkdatacurrency(self.CommonInverterValues.IAC)):
             return self.CommonInverterValues.IAC.Value
         else:
             self._GetInverterRealtimeData(self.scope, self.DeviceID, 'CommonInverterData')
@@ -339,7 +342,7 @@ class Fronius:
 
     @property
     def ACVoltage(self):
-        if (self._checkdatacurrency):
+        if (self._checkdatacurrency(self.CommonInverterValues.VAC)):
             return self.CommonInverterValues.VAC.Value
         else:
             self._GetInverterRealtimeData(self.scope, self.DeviceID, 'CommonInverterData')
@@ -347,7 +350,7 @@ class Fronius:
 
     @property
     def ACFrequency(self):
-        if (self._checkdatacurrency):
+        if (self._checkdatacurrency(self.CommonInverterValues.FAC)):
             return self.CommonInverterValues.FAC.Value
         else:
             self._GetInverterRealtimeData(self.scope, self.DeviceID, 'CommonInverterData')
@@ -355,7 +358,7 @@ class Fronius:
 
     @property
     def DCCurrent(self):
-        if (self._checkdatacurrency):
+        if (self._checkdatacurrency(self.CommonInverterValues.IDC)):
             return self.CommonInverterValues.IDC.Value
         else:
             self._GetInverterRealtimeData(self.scope, self.DeviceID, 'CommonInverterData')
@@ -363,7 +366,7 @@ class Fronius:
 
     @property
     def DCVoltage(self):
-        if (self._checkdatacurrency):
+        if (self._checkdatacurrency(self.CommonInverterValues.VDC)):
             return self.CommonInverterValues.VDC.Value
         else:
             self._GetInverterRealtimeData(self.scope, self.DeviceID, 'CommonInverterData')
@@ -373,7 +376,7 @@ class Fronius:
     #-------------------------------------------------------------------------------------------------------------------
     @property
     def ACcurrentPH1(self):
-        if (self._checkdatacurrency):
+        if (self._checkdatacurrency(self.ThreePhaseinverterValues.IAC_L1)):
             return self.ThreePhaseinverterValues.IAC_L1.Value
         else:
             self._GetInverterRealtimeData(self.scope, self.DeviceID, '3PInverterData')
@@ -381,7 +384,7 @@ class Fronius:
 
     @property
     def ACcurrentPH2(self):
-        if (self._checkdatacurrency):
+        if (self._checkdatacurrency(self.ThreePhaseinverterValues.IAC_L2)):
             return self.ThreePhaseinverterValues.IAC_L2.Value
         else:
             self._GetInverterRealtimeData(self.scope, self.DeviceID, '3PInverterData')
@@ -389,7 +392,7 @@ class Fronius:
 
     @property
     def ACcurrentPH3(self):
-        if (self._checkdatacurrency):
+        if (self._checkdatacurrency(self.ThreePhaseinverterValues.IAC_L3)):
             return self.ThreePhaseinverterValues.IAC_L3.Value
         else:
             self._GetInverterRealtimeData(self.scope, self.DeviceID, '3PInverterData')
@@ -397,7 +400,7 @@ class Fronius:
 
     @property
     def ACVoltsPH1(self):
-        if (self._checkdatacurrency):
+        if (self._checkdatacurrency(self.ThreePhaseinverterValues.VAC_PH1)):
             return self.ThreePhaseinverterValues.VAC_PH1.Value
         else:
             self._GetInverterRealtimeData(self.scope, self.DeviceID, '3PInverterData')
@@ -405,7 +408,7 @@ class Fronius:
 
     @property
     def ACVoltsPH2(self):
-        if (self._checkdatacurrency):
+        if (self._checkdatacurrency(self.ThreePhaseinverterValues.VAC_PH2)):
             return self.ThreePhaseinverterValues.VAC_PH2.Value
         else:
             self._GetInverterRealtimeData(self.scope, self.DeviceID, '3PInverterData')
@@ -413,7 +416,7 @@ class Fronius:
 
     @property
     def ACVoltsPH1(self):
-        if (self._checkdatacurrency):
+        if (self._checkdatacurrency(self.ThreePhaseinverterValues.VAC_PH3)):
             return self.ThreePhaseinverterValues.VAC_PH3.Value
         else:
             self._GetInverterRealtimeData(self.scope, self.DeviceID, '3PInverterData')
@@ -421,7 +424,7 @@ class Fronius:
 
     @property
     def AmbientTemp(self):
-        if (self._checkdatacurrency):
+        if (self._checkdatacurrency(self.ThreePhaseinverterValues.T_Ambient)):
             return self.ThreePhaseinverterValues.T_Ambient.Value
         else:
             self._GetInverterRealtimeData(self.scope, self.DeviceID, '3PInverterData')
@@ -429,7 +432,7 @@ class Fronius:
 
     @property
     def Rotation_Speed_Fan_FR(self):
-        if (self._checkdatacurrency):
+        if (self._checkdatacurrency(self.ThreePhaseinverterValues.Rotation_Speed_Fan_FR)):
             return self.ThreePhaseinverterValues.Rotation_Speed_Fan_FR.Value
         else:
             self._GetInverterRealtimeData(self.scope, self.DeviceID, '3PInverterData')
@@ -437,7 +440,7 @@ class Fronius:
 
     @property
     def Rotation_Speed_Fan_FL(self):
-        if (self._checkdatacurrency):
+        if (self._checkdatacurrency(self.ThreePhaseinverterValues.Rotation_Speed_Fan_FL)):
             return self.ThreePhaseinverterValues.Rotation_Speed_Fan_FL.Value
         else:
             self._GetInverterRealtimeData(self.scope, self.DeviceID, '3PInverterData')
@@ -445,7 +448,7 @@ class Fronius:
 
     @property
     def Rotation_Speed_Fan_BR(self):
-        if (self._checkdatacurrency):
+        if (self._checkdatacurrency(self.ThreePhaseinverterValues.Rotation_Speed_Fan_BR)):
             return self.ThreePhaseinverterValues.Rotation_Speed_Fan_BR.Value
         else:
             self._GetInverterRealtimeData(self.scope, self.DeviceID, '3PInverterData')
@@ -453,7 +456,7 @@ class Fronius:
 
     @property
     def Rotation_Speed_Fan_BL(self):
-        if (self._checkdatacurrency):
+        if (self._checkdatacurrency(self.ThreePhaseinverterValues.Rotation_Speed_Fan_BL)):
             return self.ThreePhaseinverterValues.Rotation_Speed_Fan_BL.Value
         else:
             self._GetInverterRealtimeData(self.scope, self.DeviceID, '3PInverterData')
@@ -461,7 +464,7 @@ class Fronius:
     #-------------------------------------------------------------------------------------------------------------------
     @property
     def Day_PowerMAX(self):
-        if (self._checkdatacurrency):
+        if (self._checkdatacurrency(self.MinMaxInverterDatavalues.Day_PMAX)):
             return self.MinMaxInverterDatavalues.Day_PMAX.Value
         else:
             self._GetInverterRealtimeData(self.scope, self.DeviceID, 'MinMaxInverterData')
@@ -469,7 +472,7 @@ class Fronius:
 
     @property
     def Day_VoltageACMAX(self):
-        if (self._checkdatacurrency):
+        if (self._checkdatacurrency(self.MinMaxInverterDatavalues.Day_VACMAX)):
             return self.MinMaxInverterDatavalues.Day_VACMAX.Value
         else:
             self._GetInverterRealtimeData(self.scope, self.DeviceID, 'MinMaxInverterData')
@@ -477,7 +480,7 @@ class Fronius:
 
     @property
     def Day_VoltageACMIN(self):
-        if (self._checkdatacurrency):
+        if (self._checkdatacurrency(self.MinMaxInverterDatavalues.Day_VACMNIN)):
             return self.MinMaxInverterDatavalues.Day_VACMNIN.Value
         else:
             self._GetInverterRealtimeData(self.scope, self.DeviceID, 'MinMaxInverterData')
@@ -485,7 +488,7 @@ class Fronius:
 
     @property
     def Day_VoltageDCMAX(self):
-        if (self._checkdatacurrency):
+        if (self._checkdatacurrency(self.MinMaxInverterDatavalues.Day_VDCMax)):
             return self.MinMaxInverterDatavalues.Day_VDCMax.Value
         else:
             self._GetInverterRealtimeData(self.scope, self.DeviceID, 'MinMaxInverterData')
@@ -493,7 +496,7 @@ class Fronius:
 
     @property
     def Year_PowerMAX(self):
-        if (self._checkdatacurrency):
+        if (self._checkdatacurrency(self.MinMaxInverterDatavalues.Year_PMAX)):
             return self.MinMaxInverterDatavalues.Year_PMAX.Value
         else:
             self._GetInverterRealtimeData(self.scope, self.DeviceID, 'MinMaxInverterData')
@@ -501,7 +504,7 @@ class Fronius:
 
     @property
     def Year_VoltageACMAX(self):
-        if (self._checkdatacurrency):
+        if (self._checkdatacurrency(self.MinMaxInverterDatavalues.Year_VACMAX)):
             return self.MinMaxInverterDatavalues.Year_VACMAX.Value
         else:
             self._GetInverterRealtimeData(self.scope, self.DeviceID, 'MinMaxInverterData')
@@ -509,7 +512,7 @@ class Fronius:
 
     @property
     def Year_VoltageACMIN(self):
-        if (self._checkdatacurrency):
+        if (self._checkdatacurrency(self.MinMaxInverterDatavalues.Year_VACMNIN)):
             return self.MinMaxInverterDatavalues.Year_VACMNIN.Value
         else:
             self._GetInverterRealtimeData(self.scope, self.DeviceID, 'MinMaxInverterData')
@@ -517,7 +520,7 @@ class Fronius:
 
     @property
     def Year_VoltageDCMAX(self):
-        if (self._checkdatacurrency):
+        if (self._checkdatacurrency(self.MinMaxInverterDatavalues.Year_VDCMax)):
             return self.MinMaxInverterDatavalues.Year_VDCMax.Value
         else:
             self._GetInverterRealtimeData(self.scope, self.DeviceID, 'MinMaxInverterData')
@@ -525,7 +528,7 @@ class Fronius:
 
     @property
     def Total_PowerMAX(self):
-        if (self._checkdatacurrency):
+        if (self._checkdatacurrency(self.MinMaxInverterDatavalues.Total_PMAX)):
             return self.MinMaxInverterDatavalues.Total_PMAX.Value
         else:
             self._GetInverterRealtimeData(self.scope, self.DeviceID, 'MinMaxInverterData')
@@ -533,7 +536,7 @@ class Fronius:
 
     @property
     def Total_VoltageACMAX(self):
-        if (self._checkdatacurrency):
+        if (self._checkdatacurrency(self.MinMaxInverterDatavalues.Total_VACMAX)):
             return self.MinMaxInverterDatavalues.Total_VACMAX.Value
         else:
             self._GetInverterRealtimeData(self.scope, self.DeviceID, 'MinMaxInverterData')
@@ -541,7 +544,7 @@ class Fronius:
 
     @property
     def Total_VoltageACMIN(self):
-        if (self._checkdatacurrency):
+        if (self._checkdatacurrency(self.MinMaxInverterDatavalues.Total_VACMNIN)):
             return self.MinMaxInverterDatavalues.Total_VACMNIN.Value
         else:
             self._GetInverterRealtimeData(self.scope, self.DeviceID, 'MinMaxInverterData')
@@ -549,7 +552,7 @@ class Fronius:
 
     @property
     def Total_VoltageDCMAX(self):
-        if (self._checkdatacurrency):
+        if (self._checkdatacurrency(self.MinMaxInverterDatavalues.Total_VDCMax)):
             return self.MinMaxInverterDatavalues.Total_VDCMax.Value
         else:
             self._GetInverterRealtimeData(self.scope, self.DeviceID, 'MinMaxInverterData')
@@ -557,17 +560,42 @@ class Fronius:
 
 
     #-------------------------------------------------------------------------------------------------------------------
-    def _checkdatacurrency(self):
+    def _checkdatacurrency(self, parameter):
         """
         check to make sure the data has not gone stale.
         :return:    If data is current then return true else return false.
+        A Preproduction testing version to check data currency.
         """
 
-        SecondsFromLastSuccessfullQuery = datetime.datetime.utcnow().timestamp() - self.lastSuccessfullResponseTime
-        if  SecondsFromLastSuccessfullQuery <= self.datatimeoutseconds:
-            return True
+        #   If it has lastupdated attribute then use that to check the timing.
+        #   If it doesnt then simply go on the global lastupdated attribute.
+
+        if hasattr(parameter, 'lastupdated') and parameter.lastupdated is not None:
+            print("lastupdate param", parameter.lastupdated)
+            timedifference = (datetime.datetime.utcnow().timestamp() - parameter.lastupdated)
+            print("Tiem difference", timedifference)
+            if (timedifference <= self.datatimeoutseconds):
+                return True
+            else:
+                return False
+
         else:
-            return False
+            if (datetime.datetime.utcnow().timestamp() - self.lastSuccessfullResponseTime) <= self.datatimeoutseconds:
+                return True
+            else:
+                return False
+    #
+    # #-------------------------------------------------------------------------------------------------------------------
+    # def _checkdatacurrency(self):
+    #     """
+    #     check to make sure the data has not gone stale.
+    #     :return:    If data is current then return true else return false.
+    #     """
+    #
+    #     if  (datetime.datetime.utcnow().timestamp() - self.lastSuccessfullResponseTime) <= self.datatimeoutseconds:
+    #         return True
+    #     else:
+    #         return False
 
 
     #-------------------------------------------------------------------------------------------------------------------
@@ -873,7 +901,7 @@ class Fronius:
                 else:
                     self.CommonInverterValues.PAC.Value = 0
                     self.CommonInverterValues.PAC.Unit = 0
-                    self.CommonInverterValues.PAC.lastupdated = False
+                    self.CommonInverterValues.PAC.lastupdated = None
 
                 if 'SAC' in  json['Body']['Data']:
                     self.CommonInverterValues.SAC.Value = json['Body']['Data']['SAC']['Value']
@@ -882,7 +910,7 @@ class Fronius:
                 else:
                     self.CommonInverterValues.SAC.Value = 0
                     self.CommonInverterValues.SAC.Unit = 0
-                    self.CommonInverterValues.SAC.lastupdated = False
+                    self.CommonInverterValues.SAC.lastupdated = None
 
                 if 'IAC' in  json['Body']['Data']:
                     self.CommonInverterValues.IAC.Value = json['Body']['Data']['IAC']['Value']
@@ -891,7 +919,7 @@ class Fronius:
                 else:
                     self.CommonInverterValues.IAC.Value = 0
                     self.CommonInverterValues.IAC.Unit = 0
-                    self.CommonInverterValues.IAC.lastupdated = False
+                    self.CommonInverterValues.IAC.lastupdated = None
 
                 if 'UAC' in  json['Body']['Data']:
                     self.CommonInverterValues.VAC.Value = json['Body']['Data']['UAC']['Value']
@@ -900,7 +928,7 @@ class Fronius:
                 else:
                     self.CommonInverterValues.VAC.Value = 0
                     self.CommonInverterValues.VAC.Unit = 0
-                    self.CommonInverterValues.VAC.lastupdated = False
+                    self.CommonInverterValues.VAC.lastupdated = None
 
                 if 'IDC' in  json['Body']['Data']:
                     self.CommonInverterValues.IDC.Value = json['Body']['Data']['IDC']['Value']
@@ -909,7 +937,7 @@ class Fronius:
                 else:
                     self.CommonInverterValues.IDC.Value = 0
                     self.CommonInverterValues.IDC.Unit = 0
-                    self.CommonInverterValues.IDC.lastupdated = False
+                    self.CommonInverterValues.IDC.lastupdated = None
 
                 if 'UDC' in  json['Body']['Data']:
                     self.CommonInverterValues.VDC.Value = json['Body']['Data']['UDC']['Value']
@@ -918,7 +946,7 @@ class Fronius:
                 else:
                     self.CommonInverterValues.VDC.Value = 0
                     self.CommonInverterValues.VDC.Unit = 0
-                    self.CommonInverterValues.VDC.lastupdated = False
+                    self.CommonInverterValues.VDC.lastupdated = None
 
                 if 'DAY_ENERGY' in  json['Body']['Data']:
                     self.CommonInverterValues.Day_Energy.Value = json['Body']['Data']['DAY_ENERGY']['Value']
@@ -927,7 +955,7 @@ class Fronius:
                 else:
                     self.CommonInverterValues.Day_Energy.Value = 0
                     self.CommonInverterValues.Day_Energy.Unit = 0
-                    self.CommonInverterValues.Day_Energy.lastupdated = False
+                    self.CommonInverterValues.Day_Energy.lastupdated = None
 
                 if 'YEAR_ENERGY' in  json['Body']['Data']:
                     self.CommonInverterValues.Year_Energy.Value = json['Body']['Data']['YEAR_ENERGY']['Value']
@@ -936,7 +964,7 @@ class Fronius:
                 else:
                     self.CommonInverterValues.Year_Energy.Value = 0
                     self.CommonInverterValues.Year_Energy.Unit = 0
-                    self.CommonInverterValues.Year_Energy.lastupdated = False
+                    self.CommonInverterValues.Year_Energy.lastupdated = None
 
                 if 'TOTAL_ENERGY' in  json['Body']['Data']:
                     self.CommonInverterValues.Total_Energy.Value = json['Body']['Data']['TOTAL_ENERGY']['Value']
@@ -945,7 +973,7 @@ class Fronius:
                 else:
                     self.CommonInverterValues.Total_Energy.Value = 0
                     self.CommonInverterValues.Total_Energy.Unit = 0
-                    self.CommonInverterValues.Total_Energy.lastupdated = False
+                    self.CommonInverterValues.Total_Energy.lastupdated = None
 
                 if 'DeviceStatus' in  json['Body']['Data']:
                     self.CommonInverterValues.DeviceStatus.ErrorCode = json['Body']['Data']['DeviceStatus']['ErrorCode']
@@ -971,7 +999,7 @@ class Fronius:
                 else:
                     self.ThreePhaseinverterValues.IAC_L1.Value = 0
                     self.ThreePhaseinverterValues.IAC_L1.Unit = 0
-                    self.ThreePhaseinverterValues.IAC_L1.lastupdated = False
+                    self.ThreePhaseinverterValues.IAC_L1.lastupdated = None
 
                 if 'IAC_L2' in  json['Body']['Data']:
                     self.ThreePhaseinverterValues.IAC_L2.Value = json['Body']['Data']['IAC_L2']['Value']
@@ -980,7 +1008,7 @@ class Fronius:
                 else:
                     self.ThreePhaseinverterValues.IAC_L2.Value = 0
                     self.ThreePhaseinverterValues.IAC_L2.Unit = 0
-                    self.ThreePhaseinverterValues.IAC_L2.lastupdated = False
+                    self.ThreePhaseinverterValues.IAC_L2.lastupdated = None
 
                 if 'IAC_L3' in  json['Body']['Data']:
                     self.ThreePhaseinverterValues.IAC_L3.Value = json['Body']['Data']['IAC_L3']['Value']
@@ -989,7 +1017,7 @@ class Fronius:
                 else:
                     self.ThreePhaseinverterValues.IAC_L3.Value = 0
                     self.ThreePhaseinverterValues.IAC_L3.Unit = 0
-                    self.ThreePhaseinverterValues.IAC_L3.lastupdated = False
+                    self.ThreePhaseinverterValues.IAC_L3.lastupdated = None
 
                 if 'UAC_L1' in  json['Body']['Data']:
                     self.ThreePhaseinverterValues.VAC_PH1.Value = json['Body']['Data']['UAC_L1']['Value']
@@ -998,7 +1026,7 @@ class Fronius:
                 else:
                     self.ThreePhaseinverterValues.VAC_PH1.Value = 0
                     self.ThreePhaseinverterValues.VAC_PH1.Unit = 0
-                    self.ThreePhaseinverterValues.VAC_PH1.lastupdated = False
+                    self.ThreePhaseinverterValues.VAC_PH1.lastupdated = None
 
                 if 'UAC_L2' in  json['Body']['Data']:
                     self.ThreePhaseinverterValues.VAC_PH2.Value = json['Body']['Data']['UAC_L2']['Value']
@@ -1007,7 +1035,7 @@ class Fronius:
                 else:
                     self.ThreePhaseinverterValues.VAC_PH2.Value = 0
                     self.ThreePhaseinverterValues.VAC_PH2.Unit = 0
-                    self.ThreePhaseinverterValues.VAC_PH2.lastupdated = False
+                    self.ThreePhaseinverterValues.VAC_PH2.lastupdated = None
 
                 if 'UAC_L3' in  json['Body']['Data']:
                     self.ThreePhaseinverterValues.VAC_PH3.Value = json['Body']['Data']['UAC_L3']['Value']
@@ -1016,7 +1044,7 @@ class Fronius:
                 else:
                     self.ThreePhaseinverterValues.VAC_PH3.Value = 0
                     self.ThreePhaseinverterValues.VAC_PH3.Unit = 0
-                    self.ThreePhaseinverterValues.VAC_PH3.lastupdated = False
+                    self.ThreePhaseinverterValues.VAC_PH3.lastupdated = None
 
                 if 'T_Ambient' in  json['Body']['Data']:
                     self.ThreePhaseinverterValues.T_Ambient.Value = json['Body']['Data']['T_Ambient']['Value']
@@ -1025,7 +1053,7 @@ class Fronius:
                 else:
                     self.ThreePhaseinverterValues.T_Ambient.Value = 0
                     self.ThreePhaseinverterValues.T_Ambient.Unit = 0
-                    self.ThreePhaseinverterValues.T_Ambient.lastupdated = False
+                    self.ThreePhaseinverterValues.T_Ambient.lastupdated = None
 
                 if 'Rotation_Speed_Fan_FR' in  json['Body']['Data']:
                     self.ThreePhaseinverterValues.Rotation_Speed_Fan_FR.Value = json['Body']['Data']['Rotation_Speed_Fan_FR']['Value']
@@ -1034,7 +1062,7 @@ class Fronius:
                 else:
                     self.ThreePhaseinverterValues.Rotation_Speed_Fan_FR.Value = 0
                     self.ThreePhaseinverterValues.Rotation_Speed_Fan_FR.Unit = 0
-                    self.ThreePhaseinverterValues.Rotation_Speed_Fan_FR.lastupdated = False
+                    self.ThreePhaseinverterValues.Rotation_Speed_Fan_FR.lastupdated = None
 
                 if 'Rotation_Speed_Fan_FL' in  json['Body']['Data']:
                     self.ThreePhaseinverterValues.Rotation_Speed_Fan_FL.Value = json['Body']['Data']['Rotation_Speed_Fan_FL']['Value']
@@ -1043,7 +1071,7 @@ class Fronius:
                 else:
                     self.ThreePhaseinverterValues.Rotation_Speed_Fan_FL.Value = 0
                     self.ThreePhaseinverterValues.Rotation_Speed_Fan_FL.Unit = 0
-                    self.ThreePhaseinverterValues.Rotation_Speed_Fan_FL.lastupdated = False
+                    self.ThreePhaseinverterValues.Rotation_Speed_Fan_FL.lastupdated = None
 
                 if 'Rotation_Speed_Fan_BR' in  json['Body']['Data']:
                     self.ThreePhaseinverterValues.Rotation_Speed_Fan_BR.Value = json['Body']['Data']['Rotation_Speed_Fan_BR']['Value']
@@ -1052,7 +1080,7 @@ class Fronius:
                 else:
                     self.ThreePhaseinverterValues.Rotation_Speed_Fan_BR.Value = 0
                     self.ThreePhaseinverterValues.Rotation_Speed_Fan_BR.Unit = 0
-                    self.ThreePhaseinverterValues.Rotation_Speed_Fan_BR.lastupdated = False
+                    self.ThreePhaseinverterValues.Rotation_Speed_Fan_BR.lastupdated = None
 
                 if 'Rotation_Speed_Fan_BL' in  json['Body']['Data']:
                     self.ThreePhaseinverterValues.Rotation_Speed_Fan_BL.Value = json['Body']['Data']['Rotation_Speed_Fan_BL']['Value']
@@ -1061,7 +1089,7 @@ class Fronius:
                 else:
                     self.ThreePhaseinverterValues.Rotation_Speed_Fan_BL.Value = 0
                     self.ThreePhaseinverterValues.Rotation_Speed_Fan_BL.Unit = 0
-                    self.ThreePhaseinverterValues.Rotation_Speed_Fan_BL.lastupdated = False
+                    self.ThreePhaseinverterValues.Rotation_Speed_Fan_BL.lastupdated = None
             except KeyError:
                 raise ValueError('[{url}] Expected JSON KEY not available.  No Data Returned:'.format(url = url))
             except:
@@ -1069,27 +1097,92 @@ class Fronius:
 
         elif DataCollection == 'MinMaxInverterData' and self.UnitStatus.code == 0:
             #TODO :  Need to obtain an inverter that returns MinMax data
+            #The following is VERY POSITYIVLY Ask permission Later programming.
+            #   Can't really fix this without access to an invertter that does min max data.
             try:
-                self.MinMaxInverterDatavalues.Day_PMAX = json['Body']['Data']['DAY_PMAX']['Value']
-                self.MinMaxInverterDatavalues.Day_VACMAX = json['Body']['Data']['DAY_UACMAX']['Value']
-                self.MinMaxInverterDatavalues.Day_VACMNIN = json['Body']['Data']['DAY_UACMNIN']['Value']
-                self.MinMaxInverterDatavalues.Day_VDCMax = json['Body']['Data']['DAY_UDCMax']['Value']
-                #
-                self.MinMaxInverterDatavalues.Year_PMAX = json['Body']['Data']['YEAR_PMAX']['Value']
-                self.MinMaxInverterDatavalues.Year_VACMAX = json['Body']['Data']['YEAR_UACMAX']['Value']
-                self.MinMaxInverterDatavalues.Year_VACMNIN = json['Body']['Data']['YEAR_UACMNIN']['Value']
-                self.MinMaxInverterDatavalues.Year_VDCMax = json['Body']['Data']['YEAR_UDCMax']['Value']
-                #
-                self.MinMaxInverterDatavalues.Total_PMAX = json['Body']['Data']['TOTAL_PMAX']['Value']
-                self.MinMaxInverterDatavalues.Total_VACMAX = json['Body']['Data']['TOTAL_UACMAX']['Value']
-                self.MinMaxInverterDatavalues.Total_VACMNIN = json['Body']['Data']['TOTAL_UACMNIN']['Value']
-                self.MinMaxInverterDatavalues.Total_VDCMax = json['Body']['Data']['TOTAL_UDCMax']['Value']
-            except KeyError:
-                raise ValueError('[!] [{url}] Excepcted JSON Data not returned:'.format(url = url))
+                print("trying")
+                self.MinMaxInverterDatavalues.Day_PMAX.Value = json['Body']['Data']['DAY_PMAX']['Value']
+                self.MinMaxInverterDatavalues.Day_PMAX.lastupdated = datetime.datetime.utcnow().timestamp()
+                self.MinMaxInverterDatavalues.Day_VACMAX.Value = json['Body']['Data']['DAY_UACMAX']['Value']
+                self.MinMaxInverterDatavalues.Day_VACMAX.lastupdated = datetime.datetime.utcnow().timestamp()
+                self.MinMaxInverterDatavalues.Day_VACMNIN.Value = json['Body']['Data']['DAY_UACMNIN']['Value']
+                self.MinMaxInverterDatavalues.Day_VACMNIN.lastupdated = datetime.datetime.utcnow().timestamp()
+                self.MinMaxInverterDatavalues.Day_VDCMax.Value = json['Body']['Data']['DAY_UDCMax']['Value']
+                self.MinMaxInverterDatavalues.Day_VDCMax.lastupdated = datetime.datetime.utcnow().timestamp()
+
+                self.MinMaxInverterDatavalues.Year_PMAX.Value = json['Body']['Data']['YEAR_PMAX']['Value']
+                self.MinMaxInverterDatavalues.Year_PMAX.lastupdated = datetime.datetime.utcnow().timestamp()
+                self.MinMaxInverterDatavalues.Year_VACMAX.Value = json['Body']['Data']['YEAR_UACMAX']['Value']
+                self.MinMaxInverterDatavalues.Year_VACMAX.lastupdated = datetime.datetime.utcnow().timestamp()
+                self.MinMaxInverterDatavalues.Year_VACMNIN.Value = json['Body']['Data']['YEAR_UACMNIN']['Value']
+                self.MinMaxInverterDatavalues.Year_VACMNIN.lastupdated = datetime.datetime.utcnow().timestamp()
+                self.MinMaxInverterDatavalues.Year_VDCMax.Value = json['Body']['Data']['YEAR_UDCMax']['Value']
+                self.MinMaxInverterDatavalues.Year_VDCMax.lastupdated = datetime.datetime.utcnow().timestamp()
+
+                self.MinMaxInverterDatavalues.Total_PMAX.Value = json['Body']['Data']['TOTAL_PMAX']['Value']
+                self.MinMaxInverterDatavalues.Total_PMAX.lastupdated = datetime.datetime.utcnow().timestamp()
+                self.MinMaxInverterDatavalues.Total_VACMAX.Value = json['Body']['Data']['TOTAL_UACMAX']['Value']
+                self.MinMaxInverterDatavalues.Total_VACMAX.lastupdated = datetime.datetime.utcnow().timestamp()
+                self.MinMaxInverterDatavalues.Total_VACMNIN.Value = json['Body']['Data']['TOTAL_UACMNIN']['Value']
+                self.MinMaxInverterDatavalues.Total_VACMNIN.lastupdated = datetime.datetime.utcnow().timestamp()
+                self.MinMaxInverterDatavalues.Total_VDCMax.Value = json['Body']['Data']['TOTAL_UDCMax']['Value']
+                self.MinMaxInverterDatavalues.Total_VDCMax.lastupdated = datetime.datetime.utcnow().timestamp()
+
             except:
-                raise ValueError('Something went wrong - _GetInverterRealtimeData')
+                self.MinMaxInverterDatavalues.Day_PMAX.Value = 0
+                self.MinMaxInverterDatavalues.Day_PMAX.lastupdated = None
+                self.MinMaxInverterDatavalues.Day_VACMAX.Value = 0
+                self.MinMaxInverterDatavalues.Day_VACMAX.lastupdated = None
+                self.MinMaxInverterDatavalues.Day_VACMNIN.Value = 0
+                self.MinMaxInverterDatavalues.Day_VACMNIN.lastupdated = None
+                self.MinMaxInverterDatavalues.Day_VDCMax.Value = 0
+                self.MinMaxInverterDatavalues.Day_VDCMax.lastupdated = None
+
+                self.MinMaxInverterDatavalues.Year_PMAX.Value = 0
+                self.MinMaxInverterDatavalues.Year_PMAX.lastupdated = None
+                self.MinMaxInverterDatavalues.Year_VACMAX.Value = 0
+                self.MinMaxInverterDatavalues.Year_VDCMax.lastupdated = None
+                self.MinMaxInverterDatavalues.Year_VACMNIN.Value = 0
+                self.MinMaxInverterDatavalues.Year_VACMNIN.lastupdated = None
+                self.MinMaxInverterDatavalues.Year_VACMAX.Value = 0
+                self.MinMaxInverterDatavalues.Year_VDCMax.lastupdated = None
+                #
+                self.MinMaxInverterDatavalues.Total_PMAX.Value = 0
+                self.MinMaxInverterDatavalues.Total_PMAX.lastupdated = None
+                self.MinMaxInverterDatavalues.Total_VACMAX.Value = 0
+                self.MinMaxInverterDatavalues.Total_VACMAX.lastupdated = None
+                self.MinMaxInverterDatavalues.Total_VACMNIN.Value = 0
+                self.MinMaxInverterDatavalues.Total_VACMNIN.lastupdated = None
+                self.MinMaxInverterDatavalues.Total_VDCMax.Value = 0
+                self.MinMaxInverterDatavalues.Total_VDCMax.lastupdated = None
+
         else:
-            return False
+            self.MinMaxInverterDatavalues.Day_PMAX.Value = 0
+            self.MinMaxInverterDatavalues.Day_PMAX.lastupdated = None
+            self.MinMaxInverterDatavalues.Day_VACMAX.Value = 0
+            self.MinMaxInverterDatavalues.Day_VACMAX.lastupdated = None
+            self.MinMaxInverterDatavalues.Day_VACMNIN.Value = 0
+            self.MinMaxInverterDatavalues.Day_VACMNIN.lastupdated = None
+            self.MinMaxInverterDatavalues.Day_VDCMax.Value = 0
+            self.MinMaxInverterDatavalues.Day_VDCMax.lastupdated = None
+
+            self.MinMaxInverterDatavalues.Year_PMAX.Value = 0
+            self.MinMaxInverterDatavalues.Year_PMAX.lastupdated = None
+            self.MinMaxInverterDatavalues.Year_VACMAX.Value = 0
+            self.MinMaxInverterDatavalues.Year_VDCMax.lastupdated = None
+            self.MinMaxInverterDatavalues.Year_VACMNIN.Value = 0
+            self.MinMaxInverterDatavalues.Year_VACMNIN.lastupdated = None
+            self.MinMaxInverterDatavalues.Year_VACMAX.Value = 0
+            self.MinMaxInverterDatavalues.Year_VDCMax.lastupdated = None
+            #
+            self.MinMaxInverterDatavalues.Total_PMAX.Value = 0
+            self.MinMaxInverterDatavalues.Total_PMAX.lastupdated = None
+            self.MinMaxInverterDatavalues.Total_VACMAX.Value = 0
+            self.MinMaxInverterDatavalues.Total_VACMAX.lastupdated = None
+            self.MinMaxInverterDatavalues.Total_VACMNIN.Value = 0
+            self.MinMaxInverterDatavalues.Total_VACMNIN.lastupdated = None
+            self.MinMaxInverterDatavalues.Total_VDCMax.Value = 0
+            self.MinMaxInverterDatavalues.Total_VDCMax.lastupdated = None
         return True
 
 
@@ -1548,7 +1641,9 @@ if __name__ == "__main__":
 
     # print(fronius.ACPower)
     # print(fronius.Day_Energy)
-    print(fronius.ACPower)
+    # print(fronius.ACPower)
+    print(fronius.Day_PowerMAX)
+    # print(fronius.Year_PowerMAX)
 
     # fronius._GetGetArchiveData(Scope='System',Channel='EnergyReal_WAC_Sum_Produced',DeviceClass='Inverter',DeviceID='0')
 
