@@ -1,4 +1,5 @@
 """
+    Fronius Solar Invertert communicatons
     Copyright (C) 2018 David Crisp david.crisp@gmail.com
 
     This program is free software: you can redistribute it and/or modify
