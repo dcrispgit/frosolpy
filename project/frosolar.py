@@ -1,8 +1,19 @@
 """
-Date : 17 May 2018
-@author: David Crisp
-"""
+    Copyright (C) 2018 David Crisp david.crisp@gmail.com
 
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+"""
 #TODO Set each RECORD to have a timestamp of it when it was last updated.
 #TODO This way we know if its still current or needs to be refreshed.
 #TODO Many have been done already but there are still a few sets that need to be examined,
@@ -250,9 +261,6 @@ class Fronius:
                                     'Voltage_AC_Phase_3', 'Details', 'Manufacturer','Model']
         MeterRealTimeDataUnitFields = ['Value', 'lastupdated']
         self.MeterRealTimeData = namedtuple('MeterRealTimeDataFields',MeterRealTimeDataFields)
-
-        # self.MeterRealTimeData.Current_AC_Phase_1 = namedtuple('MeterRealTimeDataUnitFields',MeterRealTimeDataUnitFields)
-        # self.MeterRealTimeData.Current_AC_Phase_1.__new__.__defaults__ = (None,) * len(self.MeterRealTimeData.Current_AC_Phase_1._fields)
 
         self.MeterRealTimeData.Current_AC_Phase_1 = namedtuple('MeterRealTimeDataUnitFields', MeterRealTimeDataUnitFields)
         self.MeterRealTimeData.Current_AC_Phase_1.__new__.__defaults__ = (None,) * len(self.MeterRealTimeData.Current_AC_Phase_1._fields)
