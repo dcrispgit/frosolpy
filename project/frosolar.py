@@ -14,20 +14,19 @@
 
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+    Program Specifics:
+    Currently Developed to support Fronius API V1, dated 03 November 2017 from PDF.
+    http://www.fronius.com/~/downloads/Solar%20Energy/Operating%20Instructions/42%2C0410%2C2012.pdf
 """
-#TODO Set each RECORD to have a timestamp of it when it was last updated.
-#TODO This way we know if its still current or needs to be refreshed.
-#TODO Many have been done already but there are still a few sets that need to be examined,
+
+# TODO Set each RECORD to have a timestamp of it when it was last updated.
+# TODO This way we know if its still current or needs to be refreshed.
+# TODO Many have been done already but there are still a few sets that need to be examined,
+# TODO Place a return code on each method.
+# TODO relevant Move comments to ABOVE the line instead of at the end of each line where they are made.
 
 
-#TODO Place a return code on each method.
-
-#Move comments to ABOVE the line instead of at the end of each line where they are made.
-
-
-
-#   Currently Developed to support Fronius API V1, dated 03 November 2017 from PDF.
-#   http://www.fronius.com/~/downloads/Solar%20Energy/Operating%20Instructions/42%2C0410%2C2012.pdf
 
 import requests
 from collections import namedtuple
@@ -46,11 +45,22 @@ class Fronius:
 
     def __init__(self, host, useHTTPS=False, HTTPtimeout=10):
 
+        #   Hostname or IP address of the target Inverter being interrogated.
+        self.host = host
+
+        #   HTTP timeout.   How long to give the request to the Fronius unit before it times out and returns an error.
+        self.HTTPtimeout = HTTPtimeout
+
+        #   Future Proof check.  currently the Fronius only accepts HTTP connections.  Does not support HTTPS.
+        if useHTTPS:
+            self.protocol = "https"
+        else:
+            self.protocol = "http"
+
         #   Time stamp of last successful query of unit (last error code 0 returned)
-        #   TODO    This should be split out so that EVERY piece of data has its on currency record.
         self.lastSuccessfullResponseTime = None
 
-        #   Define what is considered an ideal currency.
+        #   Define what is considered an ideal time currency.  ANything older than 90 seconds is NOT fresh from the system
         #   Currently set to 90 seconds but can be adjusted depending on network etc.
         self.datatimeoutseconds = 90
 
@@ -64,9 +74,8 @@ class Fronius:
         self.inverternumber = 1
 
 
-
         """
-        Storeage for Fronius Solar API version Information
+        Storage for Fronius Solar API version Information
         http://<hostname>/solar_api/GetAPIVersion.cgi
         """
         self.APIVersion = None
@@ -95,6 +104,8 @@ class Fronius:
         self.InverterInfo = namedtuple('InverterInfo',InverterInfoFields)
         self.InverterInfo.__new__.__defaults__ = (None,) * len(self.InverterInfo._fields)
 
+
+
         #   TODO : Named Tuples with lastupdate for each record should be placed here.
         """
         Storage for Information about devices currently online
@@ -104,6 +115,8 @@ class Fronius:
         #   One of the problem is that the API doesnt define or provide full examples of some of the less used fields in the system.
         #   The only way to obtain them is to actually run the code against a systme.
 
+
+
         #   TODO : Named Tuples with lastupdate for each record should be placed here.
         """
         Storage for Logger Informtation
@@ -112,6 +125,8 @@ class Fronius:
         LoggerInfoFields = ['C02Factor','CO2Unit','CashCurrency','CashFactor','DefaultLanguage','DeliveryFactor','HWVersion','PlatformID','ProductID','SWVersion','TimezoneLocation','TimezoneName','UTCOffset','UniqueID']
         self.LoggerInfo = namedtuple('LoggerInfo', LoggerInfoFields)
         self.LoggerInfo.__new__.__defaults__ = (None,) * len(self.LoggerInfo._fields)
+
+
 
         """
         Storage for Inverter Status LEDs
@@ -130,11 +145,12 @@ class Fronius:
         self.InverterStatusLEDs.WLANLED = namedtuple('WLANLED',LEDinfoFields)        # GetLoggerLEDInfo.cgi - WLANLED
         self.InverterStatusLEDs.WLANLED.__new__.__defaults__ = (None,) * len(self.InverterStatusLEDs.WLANLED._fields)
 
+
+
         """
         Storage for Inverter Realtime Data Collections        
         One of the problems with these variables listed in the API document is they do not align exactly with what the device ACTUALLY delivers when queired.                              
         """
-        # TODO   Lets just collect THESE ones first, from whartever they actually gert processed from and then I can extend to collect ALL the values in the future.
         # TODO   Some of the data are collected from the same source. For instance, CumulationInverterData collects PAC which is the same PAC Value
 
         #   CommonInvertData - Universal values from all units
@@ -245,8 +261,6 @@ class Fronius:
         Storage for MeterReraltimeData Information
         http://<hostname>/solar_api/v1/GetMeterRealtimeData.cgi?Scope=Device&DeviceID=1
         """
-        #TODO add a last updated field here  (This is goign to enlarge this section quite a lot)
-        #TODO Process these fields
         MeterRealTimeDataFields = ['Current_AC_Phase_1','Current_AC_Phase_2','Current_AC_Phase_3','Serial', 'Enable',
                                     'EnergyReactive_VArAC_Sum_Consumed','EnergyReactive_VArAC_Sum_Produced',
                                     'EnergyReal_WAC_Minus_Absolute', 'EnergyReal_WAC_Plus_Absolute',
@@ -350,7 +364,7 @@ class Fronius:
         http://<hostname>/Solar_api/v1/GetPowerFlowRealtimeData.fcgi 
         """
         #TODO add a last updated field here
-        #TODO We can set this up so we can add multiple inverters if they exist.
+        #TODO We need to set this up so we can add multiple inverters if they exist.
         # eg: PowerFlowRealtion inverters ---Inverter 1
         #                                  ---Inverter 2
         #                       site
@@ -358,18 +372,6 @@ class Fronius:
         self.PowerFlowRealtimeSite = namedtuple('PowerFlowRealtimeSiteFields',PowerFlowRealtimeSiteFields)
         self.PowerFlowRealtimeSite.__new__.__defaults__ = (None,) * len(self.PowerFlowRealtimeSite._fields)
 
-
-        #   Hostname or IP address of the Fronius Inverter being interrogated.
-        self.host = host
-
-        #   HTTP timeout.   How long to give the request to the Fronius unit before it times out and returns an error.
-        self.HTTPtimeout = HTTPtimeout
-
-        #   Future Proof check.  currently the Fronius only accepts HTTP connections.  Does not support HTTPS.
-        if useHTTPS:
-            self.protocol = "https"
-        else:
-            self.protocol = "http"
 
         #   The Version of the Fronius API as understood and returned by itself.  If it's not version 1 then we need to stop as this code only supports API V1.
         #   Understanding is that API Version 0 is actually very old and quiote obsolete.   (The API PDF available from Fronius has the API dated at 06 August 2013.)
@@ -384,13 +386,14 @@ class Fronius:
         #   Could put a loop for one of the methods that does the same thing with different datacollections but
         #   its easier / neater /  just more obvious to call the method 4 times outside a loop.
 
+
+
+        self.initialstarttime = datetime.datetime.utcnow().timestamp()
         #TODO put a time start and time end for running all methods.   Just for interests sake.
         self._getInverterinfo()
         self._getLoggerInfo()
         self._getPowerFlowRealtimeData()
-
         self._GetMeterRealtimeData()
-
         self._GetInverterRealtimeData(self.scope, self.DeviceID, 'CumulationInverterData')
         self._GetInverterRealtimeData(self.scope, self.DeviceID, 'CommonInverterData')
         self._GetInverterRealtimeData(self.scope, self.DeviceID, '3PInverterData')
@@ -398,6 +401,8 @@ class Fronius:
 
         self._GetActiveDeviceInfo()
         self._GetMeterRealtimeData()
+
+        self.initialRunTime = datetime.datetime.utcnow().timestamp() - self.initialstarttime
 
     #-------------------------------------------------------------------------------------------------------------------
     """
@@ -2205,6 +2210,8 @@ if __name__ == "__main__":
     # print(fronius.ACPower)
     # print(fronius.Day_Energy)
     # print(fronius.ACPower)
+
+    #   Testing
     print('ACPower', fronius.ACPower)
     print('ACVoltage', fronius.ACVoltage)
     print('ACCurrent', fronius.ACCurrent)
@@ -2277,6 +2284,7 @@ if __name__ == "__main__":
     print('Visible', fronius.Visible)
     print('Manufacturer', fronius.Manufacturer)
     print('Model', fronius.Model)
+    print("Total Runtime of startup = ", fronius.initialRunTime)
 
 
     # fronius._GetGetArchiveData(Scope='System',Channel='EnergyReal_WAC_Sum_Produced',DeviceClass='Inverter',DeviceID='0')
