@@ -2174,6 +2174,7 @@ if __name__ == "__main__":
     print('Total_VoltageACMIN', fronius.Total_VoltageACMIN)
     print('Total_VoltageDCMAX', fronius.Total_VoltageDCMAX)
 
+
     print('Current_AC_Phase_1', fronius.Current_AC_Phase_1)
     print('Current_AC_Phase_2', fronius.Current_AC_Phase_2)
     print('Current_AC_Phase_3', fronius.Current_AC_Phase_3)
@@ -2211,7 +2212,6 @@ if __name__ == "__main__":
     print('Voltage_AC_Phase_1', fronius.Voltage_AC_Phase_1)
     print('Voltage_AC_Phase_2', fronius.Voltage_AC_Phase_2)
     print('Voltage_AC_Phase_3', fronius.Voltage_AC_Phase_3)
-    print('Details', fronius.Details)
     print('Manufacturer', fronius.Manufacturer)
     print('Model', fronius.Model)
 
