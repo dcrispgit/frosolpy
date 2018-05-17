@@ -49,6 +49,10 @@ class Fronius:
         #   Default Unit ID incase not provided
         self.DeviceID = 1
 
+        #   Default Inverter Number
+        self.inverternumber = 1
+
+
 
         """
         Storeage for Fronius Solar API version Information
@@ -63,11 +67,15 @@ class Fronius:
         Storage for Common Response Header (CRH) for each Query
         Shows the success or fail of each query and the reasons for the failure if any.         
         """
+        #   Note: No need for a lastupdate status stamp here as CRH shoudl be retrieved with EVERY query.   THe results
+        #   From here are effectivly the global timestamp
         UnitStatusFields = ['TimeStamp', 'code', 'status', 'description', 'reason', 'usermessage']
         self.UnitStatus = namedtuple('InverterInfo', UnitStatusFields)
         self.UnitStatus.__new__.__defaults__ = (None,) * len(self.UnitStatus._fields)
 
 
+
+        #   TODO : Named Tuples with lastupdate for each record should be placed here.
         """
         Storage for Inverter Information
         http://<hostname>/solar_api/v1/GetInverterInfo.cgi
@@ -76,7 +84,7 @@ class Fronius:
         self.InverterInfo = namedtuple('InverterInfo',InverterInfoFields)
         self.InverterInfo.__new__.__defaults__ = (None,) * len(self.InverterInfo._fields)
 
-
+        #   TODO : Named Tuples with lastupdate for each record should be placed here.
         """
         Storage for Information about devices currently online
         http://<hostname>/solar_api/v1/GetActiveDeviceInfo.cgi?DeviceClass=System
@@ -85,7 +93,7 @@ class Fronius:
         #   One of the problem is that the API doesnt define or provide full examples of some of the less used fields in the system.
         #   The only way to obtain them is to actually run the code against a systme.
 
-
+        #   TODO : Named Tuples with lastupdate for each record should be placed here.
         """
         Storage for Logger Informtation
         http://<hostname>/solar_api/v1/GetLoggerInfo.cgi
@@ -93,7 +101,6 @@ class Fronius:
         LoggerInfoFields = ['C02Factor','CO2Unit','CashCurrency','CashFactor','DefaultLanguage','DeliveryFactor','HWVersion','PlatformID','ProductID','SWVersion','TimezoneLocation','TimezoneName','UTCOffset','UniqueID']
         self.LoggerInfo = namedtuple('LoggerInfo', LoggerInfoFields)
         self.LoggerInfo.__new__.__defaults__ = (None,) * len(self.LoggerInfo._fields)
-
 
         """
         Storage for Inverter Status LEDs
@@ -330,8 +337,6 @@ class Fronius:
         self.MeterRealTimeData.Model.__new__.__defaults__ = (None,) * len(self.MeterRealTimeData.Model._fields)
 
 
-
-
         """
         Storage for PowerFlowRealtimeData Information
         http://<hostname>/Solar_api/v1/GetPowerFlowRealtimeData.fcgi 
@@ -365,8 +370,6 @@ class Fronius:
         if (self.APIVersion != 1):
             raise ValueError('Wrong API Version.  Version {} not supported'.format(self.APIVersion))
 
-
-
         #   Execute each of the data collection methods to populate the initial set of data on first run of class.
         #   This can take several seconds.
         #
@@ -396,7 +399,9 @@ class Fronius:
     used documentation at https://www.python-course.eu/python3_prodperties.php for @property 
     """
 
-    #TODO   Need to change the way with which data currency is checked.
+    #   Hopefully these properties are all self explanatory!
+    #   Could I put them in the __init__.py file?    but then it splits the code and makes it all very disorganised.
+    #   Means people have to rememebr to look there.
 
     @property
     def ACPower(self):
@@ -559,6 +564,7 @@ class Fronius:
         else:
             self._GetInverterRealtimeData(self.scope, self.DeviceID, '3PInverterData')
             return self.ThreePhaseinverterValues.Rotation_Speed_Fan_BL.Value
+
     #-------------------------------------------------------------------------------------------------------------------
     @property
     def Day_PowerMAX(self):
@@ -973,7 +979,6 @@ class Fronius:
 
 
     #-------------------------------------------------------------------------------------------------------------------
-
     def _checkdatacurrency(self, parameter):
         """
         check to make sure the data has not gone stale.
@@ -1137,22 +1142,47 @@ class Fronius:
         url = "{protocol}://{host}/{baseurl}/GetInverterInfo.cgi".format(protocol = self.protocol, host = self.host, baseurl = self.BaseURL)
         json = self._GetJSONData(url)
 
-        inverterNumber = str(1)
+        inverterNumber = str(self.inverternumber)
 
-        #TODO need to add handling incase these dont exist.
-        self.InverterInfo.CustomName = json['Body']['Data'][inverterNumber]['CustomName']
-        self.InverterInfo.DT = json['Body']['Data'][inverterNumber]['DT']
-        self.InverterInfo.ErrorCode = json['Body']['Data'][inverterNumber]['ErrorCode']
-        self.InverterInfo.PVPower = json['Body']['Data'][inverterNumber]['PVPower']
-        self.InverterInfo.Show = json['Body']['Data'][inverterNumber]['Show']
-        self.InverterInfo.StatusCode = json['Body']['Data'][inverterNumber]['StatusCode']
-        self.InverterInfo.UniqueID = json['Body']['Data'][inverterNumber]['UniqueID']
+        if 'CustomName' in json['Body']['Data'][inverterNumber]:
+            self.InverterInfo.CustomName = json['Body']['Data'][inverterNumber]['CustomName']
+        else:
+            self.InverterInfo.CustomName = None
+
+        if 'DT' in json['Body']['Data'][inverterNumber]:
+            self.InverterInfo.DT = json['Body']['Data'][inverterNumber]['DT']
+        else:
+            self.InverterInfo.DT = None
+
+        if 'ErrorCode' in json['Body']['Data'][inverterNumber]:
+            self.InverterInfo.ErrorCode = json['Body']['Data'][inverterNumber]['ErrorCode']
+        else:
+            self.InverterInfo.ErrorCode = None
+
+        if 'PVPower' in json['Body']['Data'][inverterNumber]:
+            self.InverterInfo.PVPower = json['Body']['Data'][inverterNumber]['PVPower']
+        else:
+            self.InverterInfo.PVPower = None
+
+        if 'Show' in json['Body']['Data'][inverterNumber]:
+            self.InverterInfo.Show = json['Body']['Data'][inverterNumber]['Show']
+        else:
+            self.InverterInfo.Show = None
+
+        if 'StatusCode' in json['Body']['Data'][inverterNumber]:
+            self.InverterInfo.StatusCode = json['Body']['Data'][inverterNumber]['StatusCode']
+        else:
+            self.InverterInfo.StatusCode = None
+
+        if 'UniqueID' in json['Body']['Data'][inverterNumber]:
+            self.InverterInfo.UniqueID = json['Body']['Data'][inverterNumber]['UniqueID']
+        else:
+            self.InverterInfo.UniqueID = None
 
 
     #-------------------------------------------------------------------------------------------------------------------
     def _getLoggerInfo(self):
         """
-        #TODO need to add handling incase these dont exist.
         :return:
         """
         url = "{protocol}://{host}/{baseurl}/GetLoggerInfo.cgi".format(protocol=self.protocol, host=self.host,baseurl=self.BaseURL)
@@ -1268,19 +1298,35 @@ class Fronius:
                 self.InverterStatusLEDs.WLANLED.Color = 0
                 self.InverterStatusLEDs.WLANLED.State = 0
                 self.InverterStatusLEDs.WLANLED.lastupdated = False
+
         else:
-            print("Unable to retrieve data")
-            #TODO Proper Error Handling here.
+            #   If error code returned then just populate the data with 0 and mark as not up to date
+            # TODO Proper Error Handling here.
+                self.InverterStatusLEDs.powerLED.Color = 0
+                self.InverterStatusLEDs.powerLED.State = 0
+                self.InverterStatusLEDs.powerLED.lastupdated = False
+                self.InverterStatusLEDs.SolarNetLED.Color = 0
+                self.InverterStatusLEDs.SolarNetLED.State = 0
+                self.InverterStatusLEDs.SolarNetLED.lastupdated = False
+                self.InverterStatusLEDs.SolarWebLED.Color = 0
+                self.InverterStatusLEDs.SolarWebLED.State = 0
+                self.InverterStatusLEDs.SolarWebLED.lastupdated = False
+                self.InverterStatusLEDs.WLANLED.Color = 0
+                self.InverterStatusLEDs.WLANLED.State = 0
+                self.InverterStatusLEDs.WLANLED.lastupdated = False
+
+
+
+
+
 
     #-------------------------------------------------------------------------------------------------------------------
     def _GetInverterRealtimeData(self, Scope = None , DeviceID = 0, DataCollection = None):
         """
-
         :param Scope:
         :param DeviceID:
         :param DataCollection:
         :return:
-
 
         self.fronius._GetInverterRealtimeData('System', 1, 'CurrentSumStringControlData')
         self._GetInverterRealtimeData('Device',1,'CumulationInverterData')
@@ -1297,7 +1343,6 @@ class Fronius:
         if Scope == 'Device' and DeviceID is None and DataCollection is None:
             DeviceID = 0
             DataCollection = 'CumulationInverterData'
-
 
         url = "{protocol}://{host}/{baseurl}/GetInverterRealtimeData.cgi?Scope={Scope}&DeviceID={DeviceID}&DataCollection={DataCollection}".format(protocol=self.protocol, host=self.host, baseurl=self.BaseURL, Scope=Scope, DeviceID=DeviceID, DataCollection=DataCollection)
         json = self._GetJSONData(url)
@@ -1519,8 +1564,10 @@ class Fronius:
                 raise ValueError('Something went wrong - _GetInverterRealtimeData')
 
         elif DataCollection == 'MinMaxInverterData' and self.UnitStatus.code == 0:
-            #TODO :  Need to obtain an inverter that returns MinMax data
-            #The following is VERY POSITYIVLY Ask permission Later programming.
+            #   TODO :  Need to obtain an inverter that returns MinMax data
+            #   The following section at least allows the code to run.  Only with access to an inverter that spits out minmax data
+            #   WilL I be able to properly test it and make it ACTUALLYT good code.
+            #   The following is VERY POSITYIVLY Ask permission Later programming.
             #   Can't really fix this without access to an invertter that does min max data.
             try:
                 print("trying")
@@ -1678,77 +1725,6 @@ class Fronius:
                 self.PowerFlowRealtimeSite.Rel_SelfConsumption  = json['Body']['Data']['Site']['rel_SelfConsumption']
             else:
                 self.PowerFlowRealtimeSite.Rel_SelfConsumption = False
-
-    #-------------------------------------------------------------------------------------------------------------------
-    def _GetSensorRealtimeData(self, Scope=None, DeviceID=None, DataCollection=None):
-        #TODO No sensors available on own system to test against.
-        """
-
-        :param Scope:
-        :param DeviceID:
-        :param DataCollection:
-        :return:
-        """
-
-        if Scope is None:
-            Scope = self.scope
-        if DeviceID is None:
-            DeviceID = self.DeviceID
-        if DataCollection is None:
-            DataCollection = 'NowSensorData'
-
-        url = "{protocol}://{host}/{baseurl}/GetSensorRealtimeData.cgi?Scope={Scope}&DeviceID={DeviceID}&DataCollection={DataCollection}".format(protocol=self.protocol, host=self.host, baseurl=self.BaseURL, Scope=Scope, DeviceID=DeviceID, DataCollection=DataCollection)
-        json = self._GetJSONData(url)
-        # print(json)
-        # print(url)
-
-        #TODO
-
-    #-------------------------------------------------------------------------------------------------------------------
-    def _GetStringRealtimedata(self, Scope=None, DeviceID=None, DataCollection=None, TimePeriod=None):
-        # TODO It's possible that this section is irrelevant and not needed for the purposes of data gathering.
-        """
-
-        :param Scope:
-        :param DeviceID:
-        :param DataCollection:
-        :param TimePeriod:
-        :return:
-        """
-
-        if Scope is None:
-            Scope = self.scope
-        if DeviceID is None:
-            DeviceID = self.DeviceID
-        if DataCollection is None:
-            DataCollection = 'CurrentSumStringControlData'  # 'NowStringControlData', 'LastErrorStringControlData' or 'CurrentSumStringControlData'
-        if TimePeriod is None:
-            TimePeriod = "Total"
-
-        url = "{protocol}://{host}/{baseurl}/GetStringRealtimeData.cgi?Scope={Scope}&DeviceID={DeviceID}&DataCollection={DataCollection}&TimePeriod={TimePeriod}".format(protocol=self.protocol, host=self.host, baseurl=self.BaseURL, Scope=Scope, DeviceID=DeviceID, DataCollection=DataCollection, TimePeriod=TimePeriod)
-        json = self._GetJSONData(url)
-        # print(url)
-        # print(json)
-
-        #TODO
-
-    #-------------------------------------------------------------------------------------------------------------------
-    def _GetActiveDeviceInfo(self, DeviceClass = None):
-        """
-        Collects a list of all devices connected to the system.
-        :param string DeviceClass: Inverter | Storage | OhmPilot | SensorCard | StringControl | Meter | System
-        :return:
-        """
-        #   TODO : this needs to be tested against a system with more than a single device on it to get some reasonable sense of the actual data returned.
-
-        if DeviceClass is None:
-            DeviceClass = "System"
-
-        url = "{protocol}://{host}{baseurl}GetActiveDeviceInfo.cgi?DeviceClass={DeviceClass}".format(protocol=self.protocol, host=self.host, baseurl=self.BaseURL, DeviceClass=DeviceClass)
-        json = self._GetJSONData(url)
-
-        #TODO Process this data
-
 
     #-------------------------------------------------------------------------------------------------------------------
     def _GetMeterRealtimeData(self, Scope = None, DeviceID = None):
@@ -2065,6 +2041,83 @@ class Fronius:
                 #Lets just ignore the error shall we,  and let it all fall apart
 
     #-------------------------------------------------------------------------------------------------------------------
+    def _GetSensorRealtimeData(self, Scope=None, DeviceID=None, DataCollection=None):
+            # TODO No sensors available on own system to test against.
+            """
+
+            :param Scope:
+            :param DeviceID:
+            :param DataCollection:
+            :return:
+            """
+
+            if Scope is None:
+                Scope = self.scope
+            if DeviceID is None:
+                DeviceID = self.DeviceID
+            if DataCollection is None:
+                DataCollection = 'NowSensorData'
+
+            url = "{protocol}://{host}/{baseurl}/GetSensorRealtimeData.cgi?Scope={Scope}&DeviceID={DeviceID}&DataCollection={DataCollection}".format(
+                protocol=self.protocol, host=self.host, baseurl=self.BaseURL, Scope=Scope, DeviceID=DeviceID,
+                DataCollection=DataCollection)
+            json = self._GetJSONData(url)
+            # print(json)
+            # print(url)
+
+            # TODO
+
+
+    #-------------------------------------------------------------------------------------------------------------------
+    def _GetStringRealtimedata(self, Scope=None, DeviceID=None, DataCollection=None, TimePeriod=None):
+        # TODO It's possible that this section is irrelevant and not needed for the purposes of data gathering.
+        """
+
+        :param Scope:
+        :param DeviceID:
+        :param DataCollection:
+        :param TimePeriod:
+        :return:
+        """
+
+        if Scope is None:
+            Scope = self.scope
+        if DeviceID is None:
+            DeviceID = self.DeviceID
+        if DataCollection is None:
+            DataCollection = 'CurrentSumStringControlData'  # 'NowStringControlData', 'LastErrorStringControlData' or 'CurrentSumStringControlData'
+        if TimePeriod is None:
+            TimePeriod = "Total"
+
+        url = "{protocol}://{host}/{baseurl}/GetStringRealtimeData.cgi?Scope={Scope}&DeviceID={DeviceID}&DataCollection={DataCollection}&TimePeriod={TimePeriod}".format(
+            protocol=self.protocol, host=self.host, baseurl=self.BaseURL, Scope=Scope, DeviceID=DeviceID,
+            DataCollection=DataCollection, TimePeriod=TimePeriod)
+        json = self._GetJSONData(url)
+        # print(url)
+        # print(json)
+
+        # TODO
+
+    #-------------------------------------------------------------------------------------------------------------------
+    def _GetActiveDeviceInfo(self, DeviceClass=None):
+        """
+        Collects a list of all devices connected to the system.
+        :param string DeviceClass: Inverter | Storage | OhmPilot | SensorCard | StringControl | Meter | System
+        :return:
+        """
+        #   TODO : this needs to be tested against a system with more than a single device on it to get some reasonable sense of the actual data returned.
+
+        if DeviceClass is None:
+            DeviceClass = "System"
+
+        url = "{protocol}://{host}{baseurl}GetActiveDeviceInfo.cgi?DeviceClass={DeviceClass}".format(
+            protocol=self.protocol, host=self.host, baseurl=self.BaseURL, DeviceClass=DeviceClass)
+        json = self._GetJSONData(url)
+
+        # TODO Process this data
+
+
+    #-------------------------------------------------------------------------------------------------------------------
     def _GetStorageRealtimeData(self, Scope, DeviceID):
         #TODO   Need to test against a system with storage
         """
@@ -2117,6 +2170,7 @@ class Fronius:
                .format(protocol=self.protocol, host=self.host, baseurl=self.BaseURL, Scope = Scope, SeriesType=SeriesType,HumanReadable=HumanReadable, StartDate=StartDate, EndDate = EndDate, Channel=Channel, DeviceClass=DeviceClass, DeviceID=DeviceID))
         json = self._GetJSONData(url)
         return 'Not implemented'
+
 
 
 #-----------------------------------------------------------------------------------------------------------------------
@@ -2174,12 +2228,9 @@ if __name__ == "__main__":
     print('Total_VoltageACMIN', fronius.Total_VoltageACMIN)
     print('Total_VoltageDCMAX', fronius.Total_VoltageDCMAX)
 
-
     print('Current_AC_Phase_1', fronius.Current_AC_Phase_1)
     print('Current_AC_Phase_2', fronius.Current_AC_Phase_2)
     print('Current_AC_Phase_3', fronius.Current_AC_Phase_3)
-    print('Serial', fronius.Serial)
-    print('Enable', fronius.Enable)
     print('EnergyReactive_VArAC_Sum_Consumed', fronius.EnergyReactive_VArAC_Sum_Consumed)
     print('EnergyReactive_VArAC_Sum_Produced', fronius.EnergyReactive_VArAC_Sum_Produced)
     print('EnergyReal_WAC_Minus_Absolute', fronius.EnergyReal_WAC_Minus_Absolute)
@@ -2204,19 +2255,22 @@ if __name__ == "__main__":
     print('PowerReal_P_Phase_2', fronius.PowerReal_P_Phase_2)
     print('PowerReal_P_Phase_3', fronius.PowerReal_P_Phase_3)
     print('PowerReal_P_Sum', fronius.PowerReal_P_Sum)
-    print('TimeStamp', fronius.TimeStamp)
-    print('Visible', fronius.Visible)
     print('Voltage_AC_PhaseToPhase_12', fronius.Voltage_AC_PhaseToPhase_12)
     print('Voltage_AC_PhaseToPhase_23', fronius.Voltage_AC_PhaseToPhase_23)
     print('Voltage_AC_PhaseToPhase_31', fronius.Voltage_AC_PhaseToPhase_31)
     print('Voltage_AC_Phase_1', fronius.Voltage_AC_Phase_1)
     print('Voltage_AC_Phase_2', fronius.Voltage_AC_Phase_2)
     print('Voltage_AC_Phase_3', fronius.Voltage_AC_Phase_3)
+    print('Serial', fronius.Serial)
+    print('Enable', fronius.Enable)
+    print('TimeStamp', fronius.TimeStamp)
+    print('Visible', fronius.Visible)
     print('Manufacturer', fronius.Manufacturer)
     print('Model', fronius.Model)
 
 
     # fronius._GetGetArchiveData(Scope='System',Channel='EnergyReal_WAC_Sum_Produced',DeviceClass='Inverter',DeviceID='0')
+
 
 
 
