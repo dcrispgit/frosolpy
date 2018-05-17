@@ -10,6 +10,8 @@ Date : 19 April 2018
 
 #TODO Place a return code on each method.
 
+#Move comments to ABOVE the line instead of at the end of each line where they are made.
+
 
 
 #   Currently Developed to support Fronius API V1, dated 03 November 2017 from PDF.
@@ -39,7 +41,7 @@ class Fronius:
 
         #   Define what is considered an ideal currency.
         #   Currently set to 90 seconds but can be adjusted depending on network etc.
-        self.datatimeoutseconds = 1
+        self.datatimeoutseconds = 90
 
         #   Default scope incase not provided
         self.scope = "Device"
@@ -242,7 +244,91 @@ class Fronius:
                                     'Voltage_AC_Phase_3', 'Details', 'Manufacturer','Model']
         MeterRealTimeDataUnitFields = ['Value', 'lastupdated']
         self.MeterRealTimeData = namedtuple('MeterRealTimeDataFields',MeterRealTimeDataFields)
-        self.MeterRealTimeData.__new__.__defaults__ = (None,) * len(self.MeterRealTimeData._fields)
+
+        # self.MeterRealTimeData.Current_AC_Phase_1 = namedtuple('MeterRealTimeDataUnitFields',MeterRealTimeDataUnitFields)
+        # self.MeterRealTimeData.Current_AC_Phase_1.__new__.__defaults__ = (None,) * len(self.MeterRealTimeData.Current_AC_Phase_1._fields)
+
+        self.MeterRealTimeData.Current_AC_Phase_1 = namedtuple('MeterRealTimeDataUnitFields', MeterRealTimeDataUnitFields)
+        self.MeterRealTimeData.Current_AC_Phase_1.__new__.__defaults__ = (None,) * len(self.MeterRealTimeData.Current_AC_Phase_1._fields)
+        self.MeterRealTimeData.Current_AC_Phase_2 = namedtuple('MeterRealTimeDataUnitFields', MeterRealTimeDataUnitFields)
+        self.MeterRealTimeData.Current_AC_Phase_2.__new__.__defaults__ = (None,) * len(self.MeterRealTimeData.Current_AC_Phase_2._fields)
+        self.MeterRealTimeData.Current_AC_Phase_3 = namedtuple('MeterRealTimeDataUnitFields', MeterRealTimeDataUnitFields)
+        self.MeterRealTimeData.Current_AC_Phase_3.__new__.__defaults__ = (None,) * len(self.MeterRealTimeData.Current_AC_Phase_3._fields)
+        self.MeterRealTimeData.Serial = namedtuple('MeterRealTimeDataUnitFields', MeterRealTimeDataUnitFields)
+        self.MeterRealTimeData.Serial.__new__.__defaults__ = (None,) * len(self.MeterRealTimeData.Serial._fields)
+        self.MeterRealTimeData.Enable = namedtuple('MeterRealTimeDataUnitFields', MeterRealTimeDataUnitFields)
+        self.MeterRealTimeData.Enable.__new__.__defaults__ = (None,) * len(self.MeterRealTimeData.Enable._fields)
+        self.MeterRealTimeData.EnergyReactive_VArAC_Sum_Consumed = namedtuple('MeterRealTimeDataUnitFields', MeterRealTimeDataUnitFields)
+        self.MeterRealTimeData.EnergyReactive_VArAC_Sum_Consumed.__new__.__defaults__ = (None,) * len(self.MeterRealTimeData.EnergyReactive_VArAC_Sum_Consumed._fields)
+        self.MeterRealTimeData.EnergyReactive_VArAC_Sum_Produced = namedtuple('MeterRealTimeDataUnitFields', MeterRealTimeDataUnitFields)
+        self.MeterRealTimeData.EnergyReactive_VArAC_Sum_Produced.__new__.__defaults__ = (None,) * len(self.MeterRealTimeData.EnergyReactive_VArAC_Sum_Produced._fields)
+        self.MeterRealTimeData.EnergyReal_WAC_Minus_Absolute = namedtuple('MeterRealTimeDataUnitFields', MeterRealTimeDataUnitFields)
+        self.MeterRealTimeData.EnergyReal_WAC_Minus_Absolute.__new__.__defaults__ = (None,) * len(self.MeterRealTimeData.EnergyReal_WAC_Minus_Absolute._fields)
+        self.MeterRealTimeData.EnergyReal_WAC_Plus_Absolute = namedtuple('MeterRealTimeDataUnitFields', MeterRealTimeDataUnitFields)
+        self.MeterRealTimeData.EnergyReal_WAC_Plus_Absolute.__new__.__defaults__ = (None,) * len(self.MeterRealTimeData.EnergyReal_WAC_Plus_Absolute._fields)
+        self.MeterRealTimeData.EnergyReal_WAC_Sum_Consumed = namedtuple('MeterRealTimeDataUnitFields', MeterRealTimeDataUnitFields)
+        self.MeterRealTimeData.EnergyReal_WAC_Sum_Consumed.__new__.__defaults__ = (None,) * len(self.MeterRealTimeData.EnergyReal_WAC_Sum_Consumed._fields)
+        self.MeterRealTimeData.EnergyReal_WAC_Sum_Produced = namedtuple('MeterRealTimeDataUnitFields', MeterRealTimeDataUnitFields)
+        self.MeterRealTimeData.EnergyReal_WAC_Sum_Produced.__new__.__defaults__ = (None,) * len(self.MeterRealTimeData.EnergyReal_WAC_Sum_Produced._fields)
+        self.MeterRealTimeData.Frequency_Phase_Average = namedtuple('MeterRealTimeDataUnitFields', MeterRealTimeDataUnitFields)
+        self.MeterRealTimeData.Frequency_Phase_Average.__new__.__defaults__ = (None,) * len(self.MeterRealTimeData.Frequency_Phase_Average._fields)
+        self.MeterRealTimeData.Meter_Location_Current = namedtuple('MeterRealTimeDataUnitFields', MeterRealTimeDataUnitFields)
+        self.MeterRealTimeData.Meter_Location_Current.__new__.__defaults__ = (None,) * len(self.MeterRealTimeData.Meter_Location_Current._fields)
+        self.MeterRealTimeData.PowerApparent_S_Phase_1 = namedtuple('MeterRealTimeDataUnitFields', MeterRealTimeDataUnitFields)
+        self.MeterRealTimeData.PowerApparent_S_Phase_1.__new__.__defaults__ = (None,) * len(self.MeterRealTimeData.PowerApparent_S_Phase_1._fields)
+        self.MeterRealTimeData.PowerApparent_S_Phase_2 = namedtuple('MeterRealTimeDataUnitFields', MeterRealTimeDataUnitFields)
+        self.MeterRealTimeData.PowerApparent_S_Phase_2.__new__.__defaults__ = (None,) * len(self.MeterRealTimeData.PowerApparent_S_Phase_2._fields)
+        self.MeterRealTimeData.PowerApparent_S_Phase_3 = namedtuple('MeterRealTimeDataUnitFields', MeterRealTimeDataUnitFields)
+        self.MeterRealTimeData.PowerApparent_S_Phase_3.__new__.__defaults__ = (None,) * len(self.MeterRealTimeData.PowerApparent_S_Phase_3._fields)
+        self.MeterRealTimeData.PowerApparent_S_Sum = namedtuple('MeterRealTimeDataUnitFields', MeterRealTimeDataUnitFields)
+        self.MeterRealTimeData.PowerApparent_S_Sum.__new__.__defaults__ = (None,) * len(self.MeterRealTimeData.PowerApparent_S_Sum._fields)
+        self.MeterRealTimeData.PowerFactor_Phase_1 = namedtuple('MeterRealTimeDataUnitFields', MeterRealTimeDataUnitFields)
+        self.MeterRealTimeData.PowerFactor_Phase_1.__new__.__defaults__ = (None,) * len(self.MeterRealTimeData.PowerFactor_Phase_1._fields)
+        self.MeterRealTimeData.PowerFactor_Phase_2 = namedtuple('MeterRealTimeDataUnitFields', MeterRealTimeDataUnitFields)
+        self.MeterRealTimeData.PowerFactor_Phase_2.__new__.__defaults__ = (None,) * len(self.MeterRealTimeData.PowerFactor_Phase_2._fields)
+        self.MeterRealTimeData.PowerFactor_Phase_3 = namedtuple('MeterRealTimeDataUnitFields', MeterRealTimeDataUnitFields)
+        self.MeterRealTimeData.PowerFactor_Phase_3.__new__.__defaults__ = (None,) * len(self.MeterRealTimeData.PowerFactor_Phase_3._fields)
+        self.MeterRealTimeData.PowerFactor_Sum = namedtuple('MeterRealTimeDataUnitFields', MeterRealTimeDataUnitFields)
+        self.MeterRealTimeData.PowerFactor_Sum.__new__.__defaults__ = (None,) * len(self.MeterRealTimeData.PowerFactor_Sum._fields)
+        self.MeterRealTimeData.PowerReactive_Q_Phase_1 = namedtuple('MeterRealTimeDataUnitFields', MeterRealTimeDataUnitFields)
+        self.MeterRealTimeData.PowerReactive_Q_Phase_1.__new__.__defaults__ = (None,) * len(self.MeterRealTimeData.PowerReactive_Q_Phase_1._fields)
+        self.MeterRealTimeData.PowerReactive_Q_Phase_2 = namedtuple('MeterRealTimeDataUnitFields', MeterRealTimeDataUnitFields)
+        self.MeterRealTimeData.PowerReactive_Q_Phase_2.__new__.__defaults__ = (None,) * len(self.MeterRealTimeData.PowerReactive_Q_Phase_2._fields)
+        self.MeterRealTimeData.PowerReactive_Q_Phase_3 = namedtuple('MeterRealTimeDataUnitFields', MeterRealTimeDataUnitFields)
+        self.MeterRealTimeData.PowerReactive_Q_Phase_3.__new__.__defaults__ = (None,) * len(self.MeterRealTimeData.PowerReactive_Q_Phase_3._fields)
+        self.MeterRealTimeData.PowerReactive_Q_Sum = namedtuple('MeterRealTimeDataUnitFields', MeterRealTimeDataUnitFields)
+        self.MeterRealTimeData.PowerReactive_Q_Sum.__new__.__defaults__ = (None,) * len(self.MeterRealTimeData.PowerReactive_Q_Sum._fields)
+        self.MeterRealTimeData.PowerReal_P_Phase_1 = namedtuple('MeterRealTimeDataUnitFields', MeterRealTimeDataUnitFields)
+        self.MeterRealTimeData.PowerReal_P_Phase_1.__new__.__defaults__ = (None,) * len(self.MeterRealTimeData.PowerReal_P_Phase_1._fields)
+        self.MeterRealTimeData.PowerReal_P_Phase_2 = namedtuple('MeterRealTimeDataUnitFields', MeterRealTimeDataUnitFields)
+        self.MeterRealTimeData.PowerReal_P_Phase_2.__new__.__defaults__ = (None,) * len(self.MeterRealTimeData.PowerReal_P_Phase_2._fields)
+        self.MeterRealTimeData.PowerReal_P_Phase_3 = namedtuple('MeterRealTimeDataUnitFields', MeterRealTimeDataUnitFields)
+        self.MeterRealTimeData.PowerReal_P_Phase_3.__new__.__defaults__ = (None,) * len(self.MeterRealTimeData.PowerReal_P_Phase_3._fields)
+        self.MeterRealTimeData.PowerReal_P_Sum = namedtuple('MeterRealTimeDataUnitFields', MeterRealTimeDataUnitFields)
+        self.MeterRealTimeData.PowerReal_P_Sum.__new__.__defaults__ = (None,) * len(self.MeterRealTimeData.PowerReal_P_Sum._fields)
+        self.MeterRealTimeData.TimeStamp = namedtuple('MeterRealTimeDataUnitFields', MeterRealTimeDataUnitFields)
+        self.MeterRealTimeData.TimeStamp.__new__.__defaults__ = (None,) * len(self.MeterRealTimeData.TimeStamp._fields)
+        self.MeterRealTimeData.Visible = namedtuple('MeterRealTimeDataUnitFields', MeterRealTimeDataUnitFields)
+        self.MeterRealTimeData.Visible.__new__.__defaults__ = (None,) * len(self.MeterRealTimeData.Visible._fields)
+        self.MeterRealTimeData.Voltage_AC_PhaseToPhase_12 = namedtuple('MeterRealTimeDataUnitFields', MeterRealTimeDataUnitFields)
+        self.MeterRealTimeData.Voltage_AC_PhaseToPhase_12.__new__.__defaults__ = (None,) * len(self.MeterRealTimeData.Voltage_AC_PhaseToPhase_12._fields)
+        self.MeterRealTimeData.Voltage_AC_PhaseToPhase_23 = namedtuple('MeterRealTimeDataUnitFields', MeterRealTimeDataUnitFields)
+        self.MeterRealTimeData.Voltage_AC_PhaseToPhase_23.__new__.__defaults__ = (None,) * len(self.MeterRealTimeData.Voltage_AC_PhaseToPhase_23._fields)
+        self.MeterRealTimeData.Voltage_AC_PhaseToPhase_31 = namedtuple('MeterRealTimeDataUnitFields', MeterRealTimeDataUnitFields)
+        self.MeterRealTimeData.Voltage_AC_PhaseToPhase_31.__new__.__defaults__ = (None,) * len(self.MeterRealTimeData.Voltage_AC_PhaseToPhase_31._fields)
+        self.MeterRealTimeData.Voltage_AC_Phase_1 = namedtuple('MeterRealTimeDataUnitFields', MeterRealTimeDataUnitFields)
+        self.MeterRealTimeData.Voltage_AC_Phase_1.__new__.__defaults__ = (None,) * len(self.MeterRealTimeData.Voltage_AC_Phase_1._fields)
+        self.MeterRealTimeData.Voltage_AC_Phase_2 = namedtuple('MeterRealTimeDataUnitFields', MeterRealTimeDataUnitFields)
+        self.MeterRealTimeData.Voltage_AC_Phase_2.__new__.__defaults__ = (None,) * len(self.MeterRealTimeData.Voltage_AC_Phase_2._fields)
+        self.MeterRealTimeData.Voltage_AC_Phase_3 = namedtuple('MeterRealTimeDataUnitFields', MeterRealTimeDataUnitFields)
+        self.MeterRealTimeData.Voltage_AC_Phase_3.__new__.__defaults__ = (None,) * len(self.MeterRealTimeData.Voltage_AC_Phase_3._fields)
+        self.MeterRealTimeData.Details = namedtuple('MeterRealTimeDataUnitFields', MeterRealTimeDataUnitFields)
+        self.MeterRealTimeData.Details.__new__.__defaults__ = (None,) * len(self.MeterRealTimeData.Details._fields)
+        self.MeterRealTimeData.Manufacturer = namedtuple('MeterRealTimeDataUnitFields', MeterRealTimeDataUnitFields)
+        self.MeterRealTimeData.Manufacturer.__new__.__defaults__ = (None,) * len(self.MeterRealTimeData.Manufacturer._fields)
+        self.MeterRealTimeData.Model = namedtuple('MeterRealTimeDataUnitFields', MeterRealTimeDataUnitFields)
+        self.MeterRealTimeData.Model.__new__.__defaults__ = (None,) * len(self.MeterRealTimeData.Model._fields)
+
 
 
 
@@ -292,10 +378,13 @@ class Fronius:
         self._getLoggerInfo()
         self._getPowerFlowRealtimeData()
 
+        self._GetMeterRealtimeData()
+
         self._GetInverterRealtimeData(self.scope, self.DeviceID, 'CumulationInverterData')
         self._GetInverterRealtimeData(self.scope, self.DeviceID, 'CommonInverterData')
         self._GetInverterRealtimeData(self.scope, self.DeviceID, '3PInverterData')
         self._GetInverterRealtimeData(self.scope, self.DeviceID, 'MinMaxInverterData')
+
         self._GetActiveDeviceInfo()
         self._GetMeterRealtimeData()
 
@@ -304,7 +393,7 @@ class Fronius:
     By using a property decorator and the following properties we can trigger off updates if the data is stale when its queired. 
     If the data is still within a set "currency" time then it will just return the data the system already has.
     
-    used documentation at https://www.python-course.eu/python3_properties.php for @property 
+    used documentation at https://www.python-course.eu/python3_prodperties.php for @property 
     """
 
     #TODO   Need to change the way with which data currency is checked.
@@ -569,6 +658,322 @@ class Fronius:
 
 
     #-------------------------------------------------------------------------------------------------------------------
+    @property
+    def Current_AC_Phase_1(self):
+        if (self._checkdatacurrency(self.MeterRealTimeData.Current_AC_Phase_1)):
+            return self.MeterRealTimeData.Current_AC_Phase_1.Value
+        else:
+            self._GetMeterRealtimeData()
+            return self.MeterRealTimeData.Current_AC_Phase_1.Value
+
+    @property
+    def Current_AC_Phase_2(self):
+        if (self._checkdatacurrency(self.MeterRealTimeData.Current_AC_Phase_2)):
+            return self.MeterRealTimeData.Current_AC_Phase_2.Value
+        else:
+            self._GetMeterRealtimeData()
+            return self.MeterRealTimeData.Current_AC_Phase_2.Value
+
+    @property
+    def Current_AC_Phase_3(self):
+        if (self._checkdatacurrency(self.MeterRealTimeData.Current_AC_Phase_3)):
+            return self.MeterRealTimeData.Current_AC_Phase_3.Value
+        else:
+            self._GetMeterRealtimeData()
+            return self.MeterRealTimeData.Current_AC_Phase_3.Value
+
+    @property
+    def Serial(self):
+        if (self._checkdatacurrency(self.MeterRealTimeData.Serial)):
+            return self.MeterRealTimeData.Serial.Value
+        else:
+            self._GetMeterRealtimeData()
+            return self.MeterRealTimeData.Serial.Value
+
+    @property
+    def Enable(self):
+        if (self._checkdatacurrency(self.MeterRealTimeData.Enable)):
+            return self.MeterRealTimeData.Enable.Value
+        else:
+            self._GetMeterRealtimeData()
+            return self.MeterRealTimeData.Enable.Value
+
+    @property
+    def EnergyReactive_VArAC_Sum_Consumed(self):
+        if (self._checkdatacurrency(self.MeterRealTimeData.EnergyReactive_VArAC_Sum_Consumed)):
+            return self.MeterRealTimeData.EnergyReactive_VArAC_Sum_Consumed.Value
+        else:
+            self._GetMeterRealtimeData()
+            return self.MeterRealTimeData.EnergyReactive_VArAC_Sum_Consumed.Value
+
+    @property
+    def EnergyReactive_VArAC_Sum_Produced(self):
+        if (self._checkdatacurrency(self.MeterRealTimeData.EnergyReactive_VArAC_Sum_Produced)):
+            return self.MeterRealTimeData.EnergyReactive_VArAC_Sum_Produced.Value
+        else:
+            self._GetMeterRealtimeData()
+            return self.MeterRealTimeData.EnergyReactive_VArAC_Sum_Produced.Value
+
+    @property
+    def EnergyReal_WAC_Minus_Absolute(self):
+        if (self._checkdatacurrency(self.MeterRealTimeData.EnergyReal_WAC_Minus_Absolute)):
+            return self.MeterRealTimeData.EnergyReal_WAC_Minus_Absolute.Value
+        else:
+            self._GetMeterRealtimeData()
+            return self.MeterRealTimeData.EnergyReal_WAC_Minus_Absolute.Value
+
+    @property
+    def EnergyReal_WAC_Plus_Absolute(self):
+        if (self._checkdatacurrency(self.MeterRealTimeData.EnergyReal_WAC_Plus_Absolute)):
+            return self.MeterRealTimeData.EnergyReal_WAC_Plus_Absolute.Value
+        else:
+            self._GetMeterRealtimeData()
+            return self.MeterRealTimeData.EnergyReal_WAC_Plus_Absolute.Value
+
+    @property
+    def EnergyReal_WAC_Sum_Consumed(self):
+        if (self._checkdatacurrency(self.MeterRealTimeData.EnergyReal_WAC_Sum_Consumed)):
+            return self.MeterRealTimeData.EnergyReal_WAC_Sum_Consumed.Value
+        else:
+            self._GetMeterRealtimeData()
+            return self.MeterRealTimeData.EnergyReal_WAC_Sum_Consumed.Value
+
+    @property
+    def EnergyReal_WAC_Sum_Produced(self):
+        if (self._checkdatacurrency(self.MeterRealTimeData.EnergyReal_WAC_Sum_Produced)):
+            return self.MeterRealTimeData.EnergyReal_WAC_Sum_Produced.Value
+        else:
+            self._GetMeterRealtimeData()
+            return self.MeterRealTimeData.EnergyReal_WAC_Sum_Produced.Value
+
+    @property
+    def Frequency_Phase_Average(self):
+        if (self._checkdatacurrency(self.MeterRealTimeData.Frequency_Phase_Average)):
+            return self.MeterRealTimeData.Frequency_Phase_Average.Value
+        else:
+            self._GetMeterRealtimeData()
+            return self.MeterRealTimeData.Frequency_Phase_Average.Value
+
+    @property
+    def Meter_Location_Current(self):
+        if (self._checkdatacurrency(self.MeterRealTimeData.Meter_Location_Current)):
+            return self.MeterRealTimeData.Meter_Location_Current.Value
+        else:
+            self._GetMeterRealtimeData()
+            return self.MeterRealTimeData.Meter_Location_Current.Value
+
+    @property
+    def PowerApparent_S_Phase_1(self):
+        if (self._checkdatacurrency(self.MeterRealTimeData.PowerApparent_S_Phase_1)):
+            return self.MeterRealTimeData.PowerApparent_S_Phase_1.Value
+        else:
+            self._GetMeterRealtimeData()
+            return self.MeterRealTimeData.PowerApparent_S_Phase_1.Value
+
+    @property
+    def PowerApparent_S_Phase_2(self):
+        if (self._checkdatacurrency(self.MeterRealTimeData.PowerApparent_S_Phase_2)):
+            return self.MeterRealTimeData.PowerApparent_S_Phase_2.Value
+        else:
+            self._GetMeterRealtimeData()
+            return self.MeterRealTimeData.PowerApparent_S_Phase_2.Value
+
+    @property
+    def PowerApparent_S_Phase_3(self):
+        if (self._checkdatacurrency(self.MeterRealTimeData.PowerApparent_S_Phase_3)):
+            return self.MeterRealTimeData.PowerApparent_S_Phase_3.Value
+        else:
+            self._GetMeterRealtimeData()
+            return self.MeterRealTimeData.PowerApparent_S_Phase_3.Value
+
+    @property
+    def PowerApparent_S_Sum(self):
+        if (self._checkdatacurrency(self.MeterRealTimeData.PowerApparent_S_Sum)):
+            return self.MeterRealTimeData.PowerApparent_S_Sum.Value
+        else:
+            self._GetMeterRealtimeData()
+            return self.MeterRealTimeData.PowerApparent_S_Sum.Value
+
+    @property
+    def PowerFactor_Phase_1(self):
+        if (self._checkdatacurrency(self.MeterRealTimeData.PowerFactor_Phase_1)):
+            return self.MeterRealTimeData.PowerFactor_Phase_1.Value
+        else:
+            self._GetMeterRealtimeData()
+            return self.MeterRealTimeData.PowerFactor_Phase_1.Value
+
+    @property
+    def PowerFactor_Phase_2(self):
+        if (self._checkdatacurrency(self.MeterRealTimeData.PowerFactor_Phase_2)):
+            return self.MeterRealTimeData.PowerFactor_Phase_2.Value
+        else:
+            self._GetMeterRealtimeData()
+            return self.MeterRealTimeData.PowerFactor_Phase_2.Value
+
+    @property
+    def PowerFactor_Phase_3(self):
+        if (self._checkdatacurrency(self.MeterRealTimeData.PowerFactor_Phase_3)):
+            return self.MeterRealTimeData.PowerFactor_Phase_3.Value
+        else:
+            self._GetMeterRealtimeData()
+            return self.MeterRealTimeData.PowerFactor_Phase_3.Value
+
+    @property
+    def PowerFactor_Sum(self):
+        if (self._checkdatacurrency(self.MeterRealTimeData.PowerFactor_Sum)):
+            return self.MeterRealTimeData.PowerFactor_Sum.Value
+        else:
+            self._GetMeterRealtimeData()
+            return self.MeterRealTimeData.PowerFactor_Sum.Value
+
+    @property
+    def PowerReactive_Q_Phase_1(self):
+        if (self._checkdatacurrency(self.MeterRealTimeData.PowerReactive_Q_Phase_1)):
+            return self.MeterRealTimeData.PowerReactive_Q_Phase_1.Value
+        else:
+            self._GetMeterRealtimeData()
+            return self.MeterRealTimeData.PowerReactive_Q_Phase_1.Value
+
+    @property
+    def PowerReactive_Q_Phase_2(self):
+        if (self._checkdatacurrency(self.MeterRealTimeData.PowerReactive_Q_Phase_2)):
+            return self.MeterRealTimeData.PowerReactive_Q_Phase_2.Value
+        else:
+            self._GetMeterRealtimeData()
+            return self.MeterRealTimeData.PowerReactive_Q_Phase_2.Value
+
+    @property
+    def PowerReactive_Q_Phase_3(self):
+        if (self._checkdatacurrency(self.MeterRealTimeData.PowerReactive_Q_Phase_3)):
+            return self.MeterRealTimeData.PowerReactive_Q_Phase_3.Value
+        else:
+            self._GetMeterRealtimeData()
+            return self.MeterRealTimeData.PowerReactive_Q_Phase_3.Value
+
+    @property
+    def PowerReactive_Q_Sum(self):
+        if (self._checkdatacurrency(self.MeterRealTimeData.PowerReactive_Q_Sum)):
+            return self.MeterRealTimeData.PowerReactive_Q_Sum.Value
+        else:
+            self._GetMeterRealtimeData()
+            return self.MeterRealTimeData.PowerReactive_Q_Sum.Value
+
+    @property
+    def PowerReal_P_Phase_1(self):
+        if (self._checkdatacurrency(self.MeterRealTimeData.PowerReal_P_Phase_1)):
+            return self.MeterRealTimeData.PowerReal_P_Phase_1.Value
+        else:
+            self._GetMeterRealtimeData()
+            return self.MeterRealTimeData.PowerReal_P_Phase_1.Value
+
+    @property
+    def PowerReal_P_Phase_2(self):
+        if (self._checkdatacurrency(self.MeterRealTimeData.PowerReal_P_Phase_2)):
+            return self.MeterRealTimeData.PowerReal_P_Phase_2.Value
+        else:
+            self._GetMeterRealtimeData()
+            return self.MeterRealTimeData.PowerReal_P_Phase_2.Value
+
+    @property
+    def PowerReal_P_Phase_3(self):
+        if (self._checkdatacurrency(self.MeterRealTimeData.PowerReal_P_Phase_3)):
+            return self.MeterRealTimeData.PowerReal_P_Phase_3.Value
+        else:
+            self._GetMeterRealtimeData()
+            return self.MeterRealTimeData.PowerReal_P_Phase_3.Value
+
+    @property
+    def PowerReal_P_Sum(self):
+        if (self._checkdatacurrency(self.MeterRealTimeData.PowerReal_P_Sum)):
+            return self.MeterRealTimeData.PowerReal_P_Sum.Value
+        else:
+            self._GetMeterRealtimeData()
+            return self.MeterRealTimeData.PowerReal_P_Sum.Value
+
+    @property
+    def TimeStamp(self):
+        if (self._checkdatacurrency(self.MeterRealTimeData.TimeStamp)):
+            return self.MeterRealTimeData.TimeStamp.Value
+        else:
+            self._GetMeterRealtimeData()
+            return self.MeterRealTimeData.TimeStamp.Value
+
+    @property
+    def Visible(self):
+        if (self._checkdatacurrency(self.MeterRealTimeData.Visible)):
+            return self.MeterRealTimeData.Visible.Value
+        else:
+            self._GetMeterRealtimeData()
+            return self.MeterRealTimeData.Visible.Value
+
+    @property
+    def Voltage_AC_PhaseToPhase_12(self):
+        if (self._checkdatacurrency(self.MeterRealTimeData.Voltage_AC_PhaseToPhase_12)):
+            return self.MeterRealTimeData.Voltage_AC_PhaseToPhase_12.Value
+        else:
+            self._GetMeterRealtimeData()
+            return self.MeterRealTimeData.Voltage_AC_PhaseToPhase_12.Value
+
+    @property
+    def Voltage_AC_PhaseToPhase_23(self):
+        if (self._checkdatacurrency(self.MeterRealTimeData.Voltage_AC_PhaseToPhase_23)):
+            return self.MeterRealTimeData.Voltage_AC_PhaseToPhase_23.Value
+        else:
+            self._GetMeterRealtimeData()
+            return self.MeterRealTimeData.Voltage_AC_PhaseToPhase_23.Value
+
+    @property
+    def Voltage_AC_PhaseToPhase_31(self):
+        if (self._checkdatacurrency(self.MeterRealTimeData.Voltage_AC_PhaseToPhase_31)):
+            return self.MeterRealTimeData.Voltage_AC_PhaseToPhase_31.Value
+        else:
+            self._GetMeterRealtimeData()
+            return self.MeterRealTimeData.Voltage_AC_PhaseToPhase_31.Value
+
+    @property
+    def Voltage_AC_Phase_1(self):
+        if (self._checkdatacurrency(self.MeterRealTimeData.Voltage_AC_Phase_1)):
+            return self.MeterRealTimeData.Voltage_AC_Phase_1.Value
+        else:
+            self._GetMeterRealtimeData()
+            return self.MeterRealTimeData.Voltage_AC_Phase_1.Value
+
+    @property
+    def Voltage_AC_Phase_2(self):
+        if (self._checkdatacurrency(self.MeterRealTimeData.Voltage_AC_Phase_2)):
+            return self.MeterRealTimeData.Voltage_AC_Phase_2.Value
+        else:
+            self._GetMeterRealtimeData()
+            return self.MeterRealTimeData.Voltage_AC_Phase_2.Value
+
+    @property
+    def Voltage_AC_Phase_3(self):
+        if (self._checkdatacurrency(self.MeterRealTimeData.Voltage_AC_Phase_3)):
+            return self.MeterRealTimeData.Voltage_AC_Phase_3.Value
+        else:
+            self._GetMeterRealtimeData()
+            return self.MeterRealTimeData.Voltage_AC_Phase_3.Value
+
+    @property
+    def Manufacturer(self):
+        if (self._checkdatacurrency(self.MeterRealTimeData.Manufacturer)):
+            return self.MeterRealTimeData.Manufacturer.Value
+        else:
+            self._GetMeterRealtimeData()
+            return self.MeterRealTimeData.Manufacturer.Value
+
+    @property
+    def Model(self):
+        if (self._checkdatacurrency(self.MeterRealTimeData.Model)):
+            return self.MeterRealTimeData.Model.Value
+        else:
+            self._GetMeterRealtimeData()
+            return self.MeterRealTimeData.Model.Value
+
+
+
+    #-------------------------------------------------------------------------------------------------------------------
+
     def _checkdatacurrency(self, parameter):
         """
         check to make sure the data has not gone stale.
@@ -1376,208 +1781,284 @@ class Fronius:
             try:
                 if 'Details' in json['Body']['Data']:
                     if 'Manufacturer' in  json['Body']['Data']['Details']:
-                        self.MeterRealTimeData.Manufacturer = json['Body']['Data']['Details']['Manufacturer']
+                        self.MeterRealTimeData.Manufacturer.Value = json['Body']['Data']['Details']['Manufacturer']
+                        self.MeterRealTimeData.Manufacturer.lastupdated = datetime.datetime.utcnow().timestamp()
                     else:
-                        self.MeterRealTimeData.Manufacturer = 0
+                        self.MeterRealTimeData.Manufacturer.Value = 0
+                        self.MeterRealTimeData.Manufacturer.lastupdated = None
 
                     if 'Model' in    json['Body']['Data']['Details']:
-                        self.MeterRealTimeData.Model = json['Body']['Data']['Details']['Model']
+                        self.MeterRealTimeData.Model.Value = json['Body']['Data']['Details']['Model']
+                        self.MeterRealTimeData.Model.lastupdated = datetime.datetime.utcnow().timestamp()
                     else:
-                        self.MeterRealTimeData.Model = 0
+                        self.MeterRealTimeData.Model.Value = 0
+                        self.MeterRealTimeData.Model.lastupdated = None
 
                     if 'Serial' in json['Body']['Data']['Details']:
-                        self.MeterRealTimeData.Serial = json['Body']['Data']['Details']['Serial']
+                        self.MeterRealTimeData.Serial.Value = json['Body']['Data']['Details']['Serial']
+                        self.MeterRealTimeData.Serial.lastupdated = datetime.datetime.utcnow().timestamp()
                     else:
-                        self.MeterRealTimeData.Serial = 0
+                        self.MeterRealTimeData.Serial.Value = 0
+                        self.MeterRealTimeData.Serial.lastupdated = None
                 else:
-                    self.MeterRealTimeData.Manufacturer = 0
-                    self.MeterRealTimeData.Model = 0
-                    self.MeterRealTimeData.Serial = 0
+                    self.MeterRealTimeData.Manufacturer.Value = 0
+                    self.MeterRealTimeData.Manufacturer.lastupdated = None
+                    self.MeterRealTimeData.Model.Value = 0
+                    self.MeterRealTimeData.Model.lastupdated = None
+                    self.MeterRealTimeData.Serial.Value = 0
+                    self.MeterRealTimeData.Serial.lastupdated = None
 
                 if 'Current_AC_Phase_1' in json['Body']['Data']:
-                    self.MeterRealTimeData.Current_AC_Phase_1 = json['Body']['Data']['Current_AC_Phase_1']
+                    self.MeterRealTimeData.Current_AC_Phase_1.Value = json['Body']['Data']['Current_AC_Phase_1']
+                    self.MeterRealTimeData.Current_AC_Phase_1.lastupdated = datetime.datetime.utcnow().timestamp()
                 else:
-                    self.MeterRealTimeData.Current_AC_Phase_1 = 0
+                    self.MeterRealTimeData.Current_AC_Phase_1.Value = 0
+                    self.MeterRealTimeData.Current_AC_Phase_1.lastupdated = None
 
                 if 'Current_AC_Phase_2' in json['Body']['Data']:
-                    self.MeterRealTimeData.Current_AC_Phase_2 = json['Body']['Data']['Current_AC_Phase_2']
+                    self.MeterRealTimeData.Current_AC_Phase_2.Value = json['Body']['Data']['Current_AC_Phase_2']
+                    self.MeterRealTimeData.Current_AC_Phase_2.lastupdated = datetime.datetime.utcnow().timestamp()
                 else:
-                    self.MeterRealTimeData.Current_AC_Phase_2 = 0
+                    self.MeterRealTimeData.Current_AC_Phase_2.Value = 0
+                    self.MeterRealTimeData.Current_AC_Phase_2.lastupdated = None
 
                 if 'Current_AC_Phase_3' in json['Body']['Data']:
-                    self.MeterRealTimeData.Current_AC_Phase_3 = json['Body']['Data']['Current_AC_Phase_3']
+                    self.MeterRealTimeData.Current_AC_Phase_3.Value = json['Body']['Data']['Current_AC_Phase_3']
+                    self.MeterRealTimeData.Current_AC_Phase_3.lastupdated = datetime.datetime.utcnow().timestamp()
                 else:
-                    self.MeterRealTimeData.Current_AC_Phase_3 = 0
-
-                if 'Details' in json['Body']['Data']:
-                    self.MeterRealTimeData.Details = json['Body']['Data']['Details']
-                else:
-                    self.MeterRealTimeData.Details = 0
+                    self.MeterRealTimeData.Current_AC_Phase_3.Value = 0
+                    self.MeterRealTimeData.Current_AC_Phase_3.lastupdated = None
 
                 if 'Enable' in json['Body']['Data']:
-                    self.MeterRealTimeData.Enable = json['Body']['Data']['Enable']
+                    self.MeterRealTimeData.Enable.Value = json['Body']['Data']['Enable']
+                    self.MeterRealTimeData.Enable.lastupdated = datetime.datetime.utcnow().timestamp()
                 else:
-                    self.MeterRealTimeData.Enable = 0
+                    self.MeterRealTimeData.Enable.Value = 0
+                    self.MeterRealTimeData.Enable.lastupdated = None
 
                 if 'EnergyReactive_VArAC_Sum_Consumed' in json['Body']['Data']:
-                    self.MeterRealTimeData.EnergyReactive_VArAC_Sum_Consumed = json['Body']['Data']['EnergyReactive_VArAC_Sum_Consumed']
+                    self.MeterRealTimeData.EnergyReactive_VArAC_Sum_Consumed.Value = json['Body']['Data']['EnergyReactive_VArAC_Sum_Consumed']
+                    self.MeterRealTimeData.EnergyReactive_VArAC_Sum_Consumed.lastupdated = datetime.datetime.utcnow().timestamp()
                 else:
-                    self.MeterRealTimeData.EnergyReactive_VArAC_Sum_Consumed = 0
+                    self.MeterRealTimeData.EnergyReactive_VArAC_Sum_Consumed.Value = 0
+                    self.MeterRealTimeData.EnergyReactive_VArAC_Sum_Consumed.lastupdated = None
 
                 if 'EnergyReactive_VArAC_Sum_Produced' in json['Body']['Data']:
-                    self.MeterRealTimeData.EnergyReactive_VArAC_Sum_Produced = json['Body']['Data']['EnergyReactive_VArAC_Sum_Produced']
+                    self.MeterRealTimeData.EnergyReactive_VArAC_Sum_Produced.Value = json['Body']['Data']['EnergyReactive_VArAC_Sum_Produced']
+                    self.MeterRealTimeData.EnergyReactive_VArAC_Sum_Produced.lastupdated = datetime.datetime.utcnow().timestamp()
                 else:
-                    self.MeterRealTimeData.EnergyReactive_VArAC_Sum_Produced = 0
+                    self.MeterRealTimeData.EnergyReactive_VArAC_Sum_Produced.Value = 0
+                    self.MeterRealTimeData.EnergyReactive_VArAC_Sum_Produced.lastupdated = None
 
                 if 'EnergyReal_WAC_Minus_Absolute' in json['Body']['Data']:
-                    self.MeterRealTimeData.EnergyReal_WAC_Minus_Absolute = json['Body']['Data']['EnergyReal_WAC_Minus_Absolute']
+                    self.MeterRealTimeData.EnergyReal_WAC_Minus_Absolute.Value = json['Body']['Data']['EnergyReal_WAC_Minus_Absolute']
+                    self.MeterRealTimeData.EnergyReal_WAC_Minus_Absolute.lastupdated = datetime.datetime.utcnow().timestamp()
                 else:
-                    self.MeterRealTimeData.EnergyReal_WAC_Minus_Absolute = 0
+                    self.MeterRealTimeData.EnergyReal_WAC_Minus_Absolute.Value = 0
+                    self.MeterRealTimeData.EnergyReal_WAC_Minus_Absolute.lastupdated = None
 
                 if 'EnergyReal_WAC_Plus_Absolute' in json['Body']['Data']:
-                    self.MeterRealTimeData.EnergyReal_WAC_Plus_Absolute = json['Body']['Data']['EnergyReal_WAC_Plus_Absolute']
+                    self.MeterRealTimeData.EnergyReal_WAC_Plus_Absolute.Value = json['Body']['Data']['EnergyReal_WAC_Plus_Absolute']
+                    self.MeterRealTimeData.EnergyReal_WAC_Plus_Absolute.lastupdated = datetime.datetime.utcnow().timestamp()
                 else:
-                    self.MeterRealTimeData.EnergyReal_WAC_Plus_Absolute = 0
+                    self.MeterRealTimeData.EnergyReal_WAC_Plus_Absolute.Value = 0
+                    self.MeterRealTimeData.EnergyReal_WAC_Plus_Absolute.lastupdated = None
 
                 if 'EnergyReal_WAC_Sum_Consumed' in json['Body']['Data']:
-                    self.MeterRealTimeData.EnergyReal_WAC_Sum_Consumed = json['Body']['Data']['EnergyReal_WAC_Sum_Consumed']
+                    self.MeterRealTimeData.EnergyReal_WAC_Sum_Consumed.Value = json['Body']['Data']['EnergyReal_WAC_Sum_Consumed']
+                    self.MeterRealTimeData.EnergyReal_WAC_Sum_Consumed.lastupdated = datetime.datetime.utcnow().timestamp()
                 else:
-                    self.MeterRealTimeData.EnergyReal_WAC_Sum_Consumed = 0
+                    self.MeterRealTimeData.EnergyReal_WAC_Sum_Consumed.Value = 0
+                    self.MeterRealTimeData.EnergyReal_WAC_Sum_Consumed.lastupdated = None
 
                 if 'EnergyReal_WAC_Sum_Produced' in json['Body']['Data']:
-                    self.MeterRealTimeData.EnergyReal_WAC_Sum_Produced = json['Body']['Data']['EnergyReal_WAC_Sum_Produced']
+                    self.MeterRealTimeData.EnergyReal_WAC_Sum_Produced.Value = json['Body']['Data']['EnergyReal_WAC_Sum_Produced']
+                    self.MeterRealTimeData.EnergyReal_WAC_Sum_Produced.lastupdated = datetime.datetime.utcnow().timestamp()
                 else:
-                    self.MeterRealTimeData.EnergyReal_WAC_Sum_Produced = 0
+                    self.MeterRealTimeData.EnergyReal_WAC_Sum_Produced.Value = 0
+                    self.MeterRealTimeData.EnergyReal_WAC_Sum_Produced.lastupdated = None
 
                 if 'Frequency_Phase_Average' in json['Body']['Data']:
-                    self.MeterRealTimeData.Frequency_Phase_Average = json['Body']['Data']['Frequency_Phase_Average']
+                    self.MeterRealTimeData.Frequency_Phase_Average.Value = json['Body']['Data']['Frequency_Phase_Average']
+                    self.MeterRealTimeData.Frequency_Phase_Average.lastupdated = datetime.datetime.utcnow().timestamp()
                 else:
-                    self.MeterRealTimeData.Frequency_Phase_Average = 0
+                    self.MeterRealTimeData.Frequency_Phase_Average.Value = 0
+                    self.MeterRealTimeData.Frequency_Phase_Average.lastupdated = None
 
                 if 'Meter_Location_Current' in json['Body']['Data']:
-                    self.MeterRealTimeData.Meter_Location_Current = json['Body']['Data']['Meter_Location_Current']
+                    self.MeterRealTimeData.Meter_Location_Current.Value = json['Body']['Data']['Meter_Location_Current']
+                    self.MeterRealTimeData.Meter_Location_Current.lastupdated = datetime.datetime.utcnow().timestamp()
                 else:
-                    self.MeterRealTimeData.Meter_Location_Current = 0
+                    self.MeterRealTimeData.Meter_Location_Current.Value = 0
+                    self.MeterRealTimeData.Meter_Location_Current.lastupdated = None
 
                 if  'PowerApparent_S_Phase_1' in json['Body']['Data']:
-                    self.MeterRealTimeData.PowerApparent_S_Phase_1 = json['Body']['Data']['PowerApparent_S_Phase_1']
+                    self.MeterRealTimeData.PowerApparent_S_Phase_1.Value = json['Body']['Data']['PowerApparent_S_Phase_1']
+                    self.MeterRealTimeData.PowerApparent_S_Phase_1.lastupdated = datetime.datetime.utcnow().timestamp()
                 else:
-                    self.MeterRealTimeData.PowerApparent_S_Phase_1 = 0
+                    self.MeterRealTimeData.PowerApparent_S_Phase_1.Value = 0
+                    self.MeterRealTimeData.PowerApparent_S_Phase_1.lastupdated = None
 
                 if  'PowerApparent_S_Phase_2' in json['Body']['Data']:
-                    self.MeterRealTimeData.PowerApparent_S_Phase_2 = json['Body']['Data']['PowerApparent_S_Phase_2']
+                    self.MeterRealTimeData.PowerApparent_S_Phase_2.Value = json['Body']['Data']['PowerApparent_S_Phase_2']
+                    self.MeterRealTimeData.PowerApparent_S_Phase_2.lastupdated = datetime.datetime.utcnow().timestamp()
                 else:
-                    self.MeterRealTimeData.PowerApparent_S_Phase_2 = 0
+                    self.MeterRealTimeData.PowerApparent_S_Phase_2.Value = 0
+                    self.MeterRealTimeData.PowerApparent_S_Phase_2.lastupdated = None
 
                 if  'PowerApparent_S_Phase_3' in json['Body']['Data']:
-                    self.MeterRealTimeData.PowerApparent_S_Phase_3 = json['Body']['Data']['PowerApparent_S_Phase_3']
+                    self.MeterRealTimeData.PowerApparent_S_Phase_3.Value = json['Body']['Data']['PowerApparent_S_Phase_3']
+                    self.MeterRealTimeData.PowerApparent_S_Phase_3.lastupdated = datetime.datetime.utcnow().timestamp()
                 else:
-                    self.MeterRealTimeData.PowerApparent_S_Phase_3 = 0
+                    self.MeterRealTimeData.PowerApparent_S_Phase_3.Value = 0
+                    self.MeterRealTimeData.PowerApparent_S_Phase_3.lastupdated = None
 
                 if 'PowerApparent_S_Sum' in json['Body']['Data']:
-                    self.MeterRealTimeData.PowerApparent_S_Sum = json['Body']['Data']['PowerApparent_S_Sum']
+                    self.MeterRealTimeData.PowerApparent_S_Sum.Value = json['Body']['Data']['PowerApparent_S_Sum']
+                    self.MeterRealTimeData.PowerApparent_S_Sum.lastupdated = datetime.datetime.utcnow().timestamp()
                 else:
-                    self.MeterRealTimeData.PowerApparent_S_Sum = 0
+                    self.MeterRealTimeData.PowerApparent_S_Sum.Value = 0
+                    self.MeterRealTimeData.PowerApparent_S_Sum.lastupdated = None
 
                 if 'PowerFactor_Phase_1' in json['Body']['Data']:
-                    self.MeterRealTimeData.PowerFactor_Phase_1 = json['Body']['Data']['PowerFactor_Phase_1']
+                    self.MeterRealTimeData.PowerFactor_Phase_1.Value = json['Body']['Data']['PowerFactor_Phase_1']
+                    self.MeterRealTimeData.PowerFactor_Phase_1.lastupdated = datetime.datetime.utcnow().timestamp()
                 else:
-                    self.MeterRealTimeData.PowerFactor_Phase_1 = 0
+                    self.MeterRealTimeData.PowerFactor_Phase_1.Value = 0
+                    self.MeterRealTimeData.PowerFactor_Phase_1.lastupdated = None
 
                 if 'PowerFactor_Phase_2' in json['Body']['Data']:
-                    self.MeterRealTimeData.PowerFactor_Phase_2= json['Body']['Data']['PowerFactor_Phase_2']
+                    self.MeterRealTimeData.PowerFactor_Phase_2.Value = json['Body']['Data']['PowerFactor_Phase_2']
+                    self.MeterRealTimeData.PowerFactor_Phase_2.lastupdated = datetime.datetime.utcnow().timestamp()
                 else:
-                    self.MeterRealTimeData.PowerFactor_Phase_2 = 0
+                    self.MeterRealTimeData.PowerFactor_Phase_2.Value = 0
+                    self.MeterRealTimeData.PowerFactor_Phase_2.lastupdated = None
 
                 if 'PowerFactor_Phase_3' in json['Body']['Data']:
-                    self.MeterRealTimeData.PowerFactor_Phase_3 = json['Body']['Data']['PowerFactor_Phase_3']
+                    self.MeterRealTimeData.PowerFactor_Phase_3.Value = json['Body']['Data']['PowerFactor_Phase_3']
+                    self.MeterRealTimeData.PowerFactor_Phase_3.lastupdated = datetime.datetime.utcnow().timestamp()
                 else:
-                    self.MeterRealTimeData.PowerFactor_Phase_3 = 0
+                    self.MeterRealTimeData.PowerFactor_Phase_3.Value = 0
+                    self.MeterRealTimeData.PowerFactor_Phase_3.lastupdated = None
 
                 if 'PowerFactor_Sum' in json['Body']['Data']:
-                    self.MeterRealTimeData.PowerFactor_Sum = json['Body']['Data']['PowerFactor_Sum']
+                    self.MeterRealTimeData.PowerFactor_Sum.Value = json['Body']['Data']['PowerFactor_Sum']
+                    self.MeterRealTimeData.PowerFactor_Sum.lastupdated = datetime.datetime.utcnow().timestamp()
                 else:
-                    self.MeterRealTimeData.PowerFactor_Sum = 0
+                    self.MeterRealTimeData.PowerFactor_Sum.Value = 0
+                    self.MeterRealTimeData.PowerFactor_Sum.lastupdated = None
 
                 if 'PowerReactive_Q_Phase_1' in json['Body']['Data']:
-                    self.MeterRealTimeData.PowerReactive_Q_Phase_1 = json['Body']['Data']['PowerReactive_Q_Phase_1']
+                    self.MeterRealTimeData.PowerReactive_Q_Phase_1.Value = json['Body']['Data']['PowerReactive_Q_Phase_1']
+                    self.MeterRealTimeData.PowerReactive_Q_Phase_1.lastupdated = datetime.datetime.utcnow().timestamp()
                 else:
-                    self.MeterRealTimeData.PowerReactive_Q_Phase_1 = 0
+                    self.MeterRealTimeData.PowerReactive_Q_Phase_1.Value = 0
+                    self.MeterRealTimeData.PowerReactive_Q_Phase_1.lastupdated = None
 
                 if 'PowerReactive_Q_Phase_2' in json['Body']['Data']:
-                    self.MeterRealTimeData.PowerReactive_Q_Phase_2 = json['Body']['Data']['PowerReactive_Q_Phase_2']
+                    self.MeterRealTimeData.PowerReactive_Q_Phase_2.Value = json['Body']['Data']['PowerReactive_Q_Phase_2']
+                    self.MeterRealTimeData.PowerReactive_Q_Phase_2.lastupdated = datetime.datetime.utcnow().timestamp()
                 else:
-                    self.MeterRealTimeData.PowerReactive_Q_Phase_2 = 0
+                    self.MeterRealTimeData.PowerReactive_Q_Phase_2.Value = 0
+                    self.MeterRealTimeData.PowerReactive_Q_Phase_2.lastupdated = None
 
                 if 'PowerReactive_Q_Phase_3' in json['Body']['Data']:
-                    self.MeterRealTimeData.PowerReactive_Q_Phase_3 = json['Body']['Data']['PowerReactive_Q_Phase_3']
+                    self.MeterRealTimeData.PowerReactive_Q_Phase_3.Value = json['Body']['Data']['PowerReactive_Q_Phase_3']
+                    self.MeterRealTimeData.PowerReactive_Q_Phase_3.lastupdated = datetime.datetime.utcnow().timestamp()
                 else:
-                    self.MeterRealTimeData.PowerReactive_Q_Phase_3 = 0
+                    self.MeterRealTimeData.PowerReactive_Q_Phase_3.Value = 0
+                    self.MeterRealTimeData.PowerReactive_Q_Phase_3.lastupdated = None
 
                 if 'PowerReactive_Q_Sum' in json['Body']['Data']:
-                    self.MeterRealTimeData.PowerReactive_Q_Sum = json['Body']['Data']['PowerReactive_Q_Sum']
+                    self.MeterRealTimeData.PowerReactive_Q_Sum.Value = json['Body']['Data']['PowerReactive_Q_Sum']
+                    self.MeterRealTimeData.PowerReactive_Q_Sum.lastupdated = datetime.datetime.utcnow().timestamp()
                 else:
-                    self.MeterRealTimeData.PowerReactive_Q_Sum = 0
+                    self.MeterRealTimeData.PowerReactive_Q_Sum.Value = 0
+                    self.MeterRealTimeData.PowerReactive_Q_Sum.lastupdated = None
 
                 if 'PowerReal_P_Phase_1' in json['Body']['Data']:
-                    self.MeterRealTimeData.PowerReal_P_Phase_1 = json['Body']['Data']['PowerReal_P_Phase_1']
+                    self.MeterRealTimeData.PowerReal_P_Phase_1.Value = json['Body']['Data']['PowerReal_P_Phase_1']
+                    self.MeterRealTimeData.PowerReal_P_Phase_1.lastupdated = datetime.datetime.utcnow().timestamp()
                 else:
-                    self.MeterRealTimeData.PowerReal_P_Phase_1 = 0
+                    self.MeterRealTimeData.PowerReal_P_Phase_1.Value = 0
+                    self.MeterRealTimeData.PowerReal_P_Phase_1.lastupdated = None
 
                 if 'PowerReal_P_Phase_2' in json['Body']['Data']:
-                    self.MeterRealTimeData.PowerReal_P_Phase_2 = json['Body']['Data']['PowerReal_P_Phase_2']
+                    self.MeterRealTimeData.PowerReal_P_Phase_2.Value = json['Body']['Data']['PowerReal_P_Phase_2']
+                    self.MeterRealTimeData.PowerReal_P_Phase_2.lastupdated = datetime.datetime.utcnow().timestamp()
                 else:
-                    self.MeterRealTimeData.PowerReal_P_Phase_2 = 0
+                    self.MeterRealTimeData.PowerReal_P_Phase_2.Value = 0
+                    self.MeterRealTimeData.PowerReal_P_Phase_2.lastupdated = None
 
                 if 'PowerReal_P_Phase_3' in json['Body']['Data']:
-                    self.MeterRealTimeData.PowerReal_P_Phase_3 = json['Body']['Data']['PowerReal_P_Phase_3']
+                    self.MeterRealTimeData.PowerReal_P_Phase_3.Value = json['Body']['Data']['PowerReal_P_Phase_3']
+                    self.MeterRealTimeData.PowerReal_P_Phase_3.lastupdated = datetime.datetime.utcnow().timestamp()
                 else:
-                    self.MeterRealTimeData.PowerReal_P_Phase_3 = 0
+                    self.MeterRealTimeData.PowerReal_P_Phase_3.Value = 0
+                    self.MeterRealTimeData.PowerReal_P_Phase_3.lastupdated = None
 
                 if 'PowerReal_P_Sum' in json['Body']['Data']:
-                    self.MeterRealTimeData.PowerReal_P_Sum = json['Body']['Data']['PowerReal_P_Sum']
+                    self.MeterRealTimeData.PowerReal_P_Sum.Value = json['Body']['Data']['PowerReal_P_Sum']
+                    self.MeterRealTimeData.PowerReal_P_Sum.lastupdated = datetime.datetime.utcnow().timestamp()
                 else:
-                    self.MeterRealTimeData.PowerReal_P_Sum = 0
+                    self.MeterRealTimeData.PowerReal_P_Sum.Value = 0
+                    self.MeterRealTimeData.PowerReal_P_Sum.lastupdated = None
 
                 if 'TimeStamp' in json['Body']['Data']:
-                    self.MeterRealTimeData.TimeStamp = json['Body']['Data']['TimeStamp']
+                    self.MeterRealTimeData.TimeStamp.Value = json['Body']['Data']['TimeStamp']
+                    self.MeterRealTimeData.TimeStamp.lastupdated = datetime.datetime.utcnow().timestamp()
                 else:
-                    self.MeterRealTimeData.TimeStamp = 0
+                    self.MeterRealTimeData.TimeStamp.Value = 0
+                    self.MeterRealTimeData.TimeStamp.lastupdated = None
 
                 if 'Visible' in json['Body']['Data']:
-                    self.MeterRealTimeData.Visible = json['Body']['Data']['Visible']
+                    self.MeterRealTimeData.Visible.Value = json['Body']['Data']['Visible']
+                    self.MeterRealTimeData.Visible.lastupdated = datetime.datetime.utcnow().timestamp()
                 else:
-                    self.MeterRealTimeData.Visible = 0
+                    self.MeterRealTimeData.Visible.Value = 0
+                    self.MeterRealTimeData.Visible.lastupdated = None
 
                 if 'Voltage_AC_PhaseToPhase_12' in json['Body']['Data']:
-                    self.MeterRealTimeData.Voltage_AC_PhaseToPhase_12 = json['Body']['Data']['Voltage_AC_PhaseToPhase_12']
+                    self.MeterRealTimeData.Voltage_AC_PhaseToPhase_12.Value = json['Body']['Data']['Voltage_AC_PhaseToPhase_12']
+                    self.MeterRealTimeData.Voltage_AC_PhaseToPhase_12.lastupdated = datetime.datetime.utcnow().timestamp()
                 else:
-                    self.MeterRealTimeData.Voltage_AC_PhaseToPhase_12 = 0
+                    self.MeterRealTimeData.Voltage_AC_PhaseToPhase_12.Value = 0
+                    self.MeterRealTimeData.Voltage_AC_PhaseToPhase_12.lastupdated = None
 
                 if 'Voltage_AC_PhaseToPhase_23' in json['Body']['Data']:
-                    self.MeterRealTimeData.Voltage_AC_PhaseToPhase_23 = json['Body']['Data']['Voltage_AC_PhaseToPhase_23']
+                    self.MeterRealTimeData.Voltage_AC_PhaseToPhase_23.Value = json['Body']['Data']['Voltage_AC_PhaseToPhase_23']
+                    self.MeterRealTimeData.Voltage_AC_PhaseToPhase_23.lastupdated = datetime.datetime.utcnow().timestamp()
                 else:
-                    self.MeterRealTimeData.Voltage_AC_PhaseToPhase_23 = 0
+                    self.MeterRealTimeData.Voltage_AC_PhaseToPhase_23.Value = 0
+                    self.MeterRealTimeData.Voltage_AC_PhaseToPhase_23.lastupdated = None
 
                 if 'Voltage_AC_PhaseToPhase_31' in json['Body']['Data']:
-                    self.MeterRealTimeData.Voltage_AC_PhaseToPhase_31 = json['Body']['Data']['Voltage_AC_PhaseToPhase_31']
+                    self.MeterRealTimeData.Voltage_AC_PhaseToPhase_31.Value = json['Body']['Data']['Voltage_AC_PhaseToPhase_31']
+                    self.MeterRealTimeData.Voltage_AC_PhaseToPhase_31.lastupdated = datetime.datetime.utcnow().timestamp()
                 else:
-                    self.MeterRealTimeData.Voltage_AC_PhaseToPhase_31 = 0
+                    self.MeterRealTimeData.Voltage_AC_PhaseToPhase_31.Value = 0
+                    self.MeterRealTimeData.Voltage_AC_PhaseToPhase_31.lastupdated = None
 
                 if 'Voltage_AC_Phase_1' in json['Body']['Data']:
-                    self.MeterRealTimeData.Voltage_AC_Phase_1 = json['Body']['Data']['Voltage_AC_Phase_1']
+                    self.MeterRealTimeData.Voltage_AC_Phase_1.Value = json['Body']['Data']['Voltage_AC_Phase_1']
+                    self.MeterRealTimeData.Voltage_AC_Phase_1.lastupdated = datetime.datetime.utcnow().timestamp()
                 else:
-                    self.MeterRealTimeData.Voltage_AC_Phase_1 = 0
+                    self.MeterRealTimeData.Voltage_AC_Phase_1.Value = 0
+                    self.MeterRealTimeData.Voltage_AC_Phase_1.lastupdated = None
 
                 if 'Voltage_AC_Phase_2' in json['Body']['Data']:
-                    self.MeterRealTimeData.Voltage_AC_Phase_2 = json['Body']['Data']['Voltage_AC_Phase_2']
+                    self.MeterRealTimeData.Voltage_AC_Phase_2.Value = json['Body']['Data']['Voltage_AC_Phase_2']
+                    self.MeterRealTimeData.Voltage_AC_Phase_2.lastupdated = datetime.datetime.utcnow().timestamp()
                 else:
-                    self.MeterRealTimeData.Voltage_AC_Phase_2 = 0
+                    self.MeterRealTimeData.Voltage_AC_Phase_2.Value = 0
+                    self.MeterRealTimeData.Voltage_AC_Phase_2.lastupdated = None
 
                 if 'Voltage_AC_Phase_3' in json['Body']['Data']:
-                    self.MeterRealTimeData.Voltage_AC_Phase_3 = json['Body']['Data']['Voltage_AC_Phase_3']
+                    self.MeterRealTimeData.Voltage_AC_Phase_3.Value = json['Body']['Data']['Voltage_AC_Phase_3']
+                    self.MeterRealTimeData.Voltage_AC_Phase_3.lastupdated = datetime.datetime.utcnow().timestamp()
                 else:
-                    self.MeterRealTimeData.Voltage_AC_Phase_3 = 0
+                    self.MeterRealTimeData.Voltage_AC_Phase_3.Value = 0
+                    self.MeterRealTimeData.Voltage_AC_Phase_3.lastupdated = None
 
             except Exception as err:
                 print(err)
@@ -1692,6 +2173,48 @@ if __name__ == "__main__":
     print('Total_VoltageACMAX', fronius.Total_VoltageACMAX)
     print('Total_VoltageACMIN', fronius.Total_VoltageACMIN)
     print('Total_VoltageDCMAX', fronius.Total_VoltageDCMAX)
+
+    print('Current_AC_Phase_1', fronius.Current_AC_Phase_1)
+    print('Current_AC_Phase_2', fronius.Current_AC_Phase_2)
+    print('Current_AC_Phase_3', fronius.Current_AC_Phase_3)
+    print('Serial', fronius.Serial)
+    print('Enable', fronius.Enable)
+    print('EnergyReactive_VArAC_Sum_Consumed', fronius.EnergyReactive_VArAC_Sum_Consumed)
+    print('EnergyReactive_VArAC_Sum_Produced', fronius.EnergyReactive_VArAC_Sum_Produced)
+    print('EnergyReal_WAC_Minus_Absolute', fronius.EnergyReal_WAC_Minus_Absolute)
+    print('EnergyReal_WAC_Plus_Absolute', fronius.EnergyReal_WAC_Plus_Absolute)
+    print('EnergyReal_WAC_Sum_Consumed', fronius.EnergyReal_WAC_Sum_Consumed)
+    print('EnergyReal_WAC_Sum_Produced', fronius.EnergyReal_WAC_Sum_Produced)
+    print('Frequency_Phase_Average', fronius.Frequency_Phase_Average)
+    print('Meter_Location_Current', fronius.Meter_Location_Current)
+    print('PowerApparent_S_Phase_1', fronius.PowerApparent_S_Phase_1)
+    print('PowerApparent_S_Phase_2', fronius.PowerApparent_S_Phase_2)
+    print('PowerApparent_S_Phase_3', fronius.PowerApparent_S_Phase_3)
+    print('PowerApparent_S_Sum', fronius.PowerApparent_S_Sum)
+    print('PowerFactor_Phase_1', fronius.PowerFactor_Phase_1)
+    print('PowerFactor_Phase_2', fronius.PowerFactor_Phase_2)
+    print('PowerFactor_Phase_3', fronius.PowerFactor_Phase_3)
+    print('PowerFactor_Sum', fronius.PowerFactor_Sum)
+    print('PowerReactive_Q_Phase_1', fronius.PowerReactive_Q_Phase_1)
+    print('PowerReactive_Q_Phase_2', fronius.PowerReactive_Q_Phase_2)
+    print('PowerReactive_Q_Phase_3', fronius.PowerReactive_Q_Phase_3)
+    print('PowerReactive_Q_Sum', fronius.PowerReactive_Q_Sum)
+    print('PowerReal_P_Phase_1', fronius.PowerReal_P_Phase_1)
+    print('PowerReal_P_Phase_2', fronius.PowerReal_P_Phase_2)
+    print('PowerReal_P_Phase_3', fronius.PowerReal_P_Phase_3)
+    print('PowerReal_P_Sum', fronius.PowerReal_P_Sum)
+    print('TimeStamp', fronius.TimeStamp)
+    print('Visible', fronius.Visible)
+    print('Voltage_AC_PhaseToPhase_12', fronius.Voltage_AC_PhaseToPhase_12)
+    print('Voltage_AC_PhaseToPhase_23', fronius.Voltage_AC_PhaseToPhase_23)
+    print('Voltage_AC_PhaseToPhase_31', fronius.Voltage_AC_PhaseToPhase_31)
+    print('Voltage_AC_Phase_1', fronius.Voltage_AC_Phase_1)
+    print('Voltage_AC_Phase_2', fronius.Voltage_AC_Phase_2)
+    print('Voltage_AC_Phase_3', fronius.Voltage_AC_Phase_3)
+    print('Details', fronius.Details)
+    print('Manufacturer', fronius.Manufacturer)
+    print('Model', fronius.Model)
+
 
     # fronius._GetGetArchiveData(Scope='System',Channel='EnergyReal_WAC_Sum_Produced',DeviceClass='Inverter',DeviceID='0')
 
