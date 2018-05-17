@@ -1,7 +1,7 @@
-'''
-Date : 19 April 2018
+"""
+Date : 17 May 2018
 @author: David Crisp
-'''
+"""
 
 #TODO Set each RECORD to have a timestamp of it when it was last updated.
 #TODO This way we know if its still current or needs to be refreshed.
@@ -22,7 +22,7 @@ from collections import namedtuple
 import datetime
 
 class Fronius:
-    '''
+    """
     Interface to communicate with the Fronius Symo over http / JSON
     Attributes:
         host        The ip/domain of the Fronius device
@@ -30,8 +30,7 @@ class Fronius:
         timeout     HTTP timeout in seconds
 
         https://thomas-cokelaer.info/tutorials/sphinx/docstring_python.html
-
-    '''
+    """
 
     def __init__(self, host, useHTTPS=False, HTTPtimeout=10):
 
@@ -367,7 +366,7 @@ class Fronius:
         #   Understanding is that API Version 0 is actually very old and quiote obsolete.   (The API PDF available from Fronius has the API dated at 06 August 2013.)
         #   Woudl be interesting to understand which units out there are still on API V0 if any. I suspect they all upgrade to the latest version
         self._fetch_APIVersion()
-        if (self.APIVersion != 1):
+        if self.APIVersion != 1:
             raise ValueError('Wrong API Version.  Version {} not supported'.format(self.APIVersion))
 
         #   Execute each of the data collection methods to populate the initial set of data on first run of class.
@@ -991,7 +990,7 @@ class Fronius:
 
         if hasattr(parameter, 'lastupdated') and parameter.lastupdated is not None:
             timedifference = (datetime.datetime.utcnow().timestamp() - parameter.lastupdated)
-            if (timedifference <= self.datatimeoutseconds):
+            if timedifference <= self.datatimeoutseconds:
                 return True
             else:
                 return False
@@ -1599,6 +1598,8 @@ class Fronius:
                 self.MinMaxInverterDatavalues.Total_VDCMax.lastupdated = datetime.datetime.utcnow().timestamp()
 
             except:
+                #Hack to make things work for the moment.  Need to really work on this better.
+                #   Yes this is a broad exception string but.............
                 self.MinMaxInverterDatavalues.Day_PMAX.Value = 0
                 self.MinMaxInverterDatavalues.Day_PMAX.lastupdated = None
                 self.MinMaxInverterDatavalues.Day_VACMAX.Value = 0
@@ -2161,9 +2162,9 @@ class Fronius:
         :param DeviceID:
         :return:
         """
-        if StartDate == None:
+        if StartDate is None:
             StartDate = datetime.date.today() - datetime.timedelta(days=15)
-        if EndDate == None:
+        if EndDate is None:
             EndDate = datetime.date.today()
 
         url = ("{protocol}://{host}/{baseurl}/GetArchiveData.cgi?Scope={Scope}&SeriesType={SeriesType}&HumanReadable={HumanReadable}&StartDate={StartDate}&EndDate={EndDate}&Channel={Channel}&DeviceClass={DeviceClass}&DeviceID={DeviceID}"
